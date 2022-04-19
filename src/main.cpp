@@ -22,7 +22,7 @@ double RANDOM_COLORS[7][3] = {
 	{0.6350,    0.0780,    0.1840},
 };
 
-Camera camera;
+Camera camera(3,3);
 
 int main(int argc, char **argv)
 {
@@ -78,6 +78,8 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << "Number of vertices: " << posBuf.size()/3 << endl;
-	
+	camera.cast();
+
+
 	return 0;
 }
