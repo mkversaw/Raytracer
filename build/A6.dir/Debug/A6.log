@@ -1,0 +1,18 @@
+﻿  Camera.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(34,63): warning C4552: '/': result of expression not used
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(51,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(52,29): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(54,27): error C2440: 'initializing': cannot convert from 'initializer list' to 'glm::vec<4,float,glm::packed_highp>'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(54,27): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+  main.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(34,63): warning C4552: '/': result of expression not used
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\main.cpp(76,34): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Generating Code...

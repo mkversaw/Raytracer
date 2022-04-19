@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "Camera.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
@@ -20,6 +21,8 @@ double RANDOM_COLORS[7][3] = {
 	{0.3010,    0.7450,    0.9330},
 	{0.6350,    0.0780,    0.1840},
 };
+
+Camera camera;
 
 int main(int argc, char **argv)
 {
