@@ -50,50 +50,34 @@ void Camera::applyViewMatrix(std::shared_ptr<MatrixStack> MV) const
 }
 
 
-void Camera::cast() {
-
-	auto MV = std::make_shared<MatrixStack>();
-	MV->loadIdentity();
-	applyProjectionMatrix(MV);
-
-	mat4 P = MV->topMatrix();
-	
-	MV->loadIdentity();
-	applyViewMatrix(MV);
-
-	mat4 V = MV->topMatrix();
-	mat4 C = inverse(V);
+void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
 
 	vec3 ray[2];
 
-	std::cout << "fov: " << height << "\n";
-
 	ray[0] = vec3(C[3][0], C[3][1], C[3][2]);
 
-	// x , y = 1.5 -> the middle of the middle pixel
 
-	float x = 1.5;
 	//float y = tan(degRad(45));
-	float y = 1.5;
-	std::cout << "y: " << y << "\n";
+
+	//std::cout << "y: " << y << "\n";
 
 	vec2 ndc = { // normalized device coords
-		((2.0 * x) / (width))-1.0,
-		1.0 - ((2.0 * y) / (height))
+		((2.0 * px) / (width))-1.0,
+		1.0 - ((2.0 * py) / (height))
 	};
 
-	std::cout << ndc.x << " " << ndc.y << "\n";
+	//std::cout << ndc.x << " " << ndc.y << "\n";
 
 	vec4 clip = { ndc.x,ndc.y,-1.0,1.0 }; // clip coords
 
 	vec4 eye = glm::inverse(P) * clip; // eye coords
 	eye.w = 1;
 
-	std::cout << eye.x << " " << eye.y << " " << eye.z << "\n";
+	//std::cout << eye.x << " " << eye.y << " " << eye.z << "\n";
 
 	vec4 world = C * eye; // position in world coords
 
-	std::cout << world.x << " " << world.y << " " << world.z << "\n";
+	//std::cout << world.x << " " << world.y << " " << world.z << "\n";
 
 	vec4 dir = normalize(world - vec4(ray[0], 1.0)); // direction in world coords
 	ray[1] = dir;
@@ -103,24 +87,23 @@ void Camera::cast() {
 	//std::cout << "x: " << test.x << " y: " << test.y << " z: " << test.z << "\n";
 }
 
-void Camera::raycast(std::shared_ptr<MatrixStack> P, std::shared_ptr<MatrixStack> V) {
-	int z = 4; // hardcode for now
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-			vec3 px = { x,y,z }; // pixel coords
-			vec2 ndc = { // normalized device coords
-				((2.0 * x) / (width)-1.0),
-				(1.0 - (2.0 * y) / (height))
-			};
+void Camera::raycast() {
+	std::shared_ptr<MatrixStack> MV = std::make_shared<MatrixStack>();
+	MV->loadIdentity();
+	applyProjectionMatrix(MV);
 
-			vec4 clip = { ndc.x,ndc.y,-1,1 }; // clip coords
-			vec4 eye = glm::inverse(P->topMatrix()) * clip; // eye coords
-			eye.w = 1;
+	mat4 P = MV->topMatrix();
 
-			vec4 world = glm::inverse(V->topMatrix()) * eye; // position in world coords
+	MV->loadIdentity();
+	applyViewMatrix(MV);
 
-			vec4 dir = normalize(world - vec4(px, 1.0)); // direction in world coords
-			
+	mat4 V = MV->topMatrix();
+	mat4 C = inverse(V);
+	
+	for (int j = 0; j < height; j++) {
+		for (int i = width; i > 0; i--) {
+			std::cout << i - 0.5 << " " << j + 0.5 << " ";
+			cast(i - 0.5, j + 0.5, MV, P, V, C);
 		}
 	}
 }

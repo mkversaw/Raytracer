@@ -38,8 +38,8 @@ struct Camera {
 	void setFOV(const float& degree) { fov = ( degree * glm::pi<float>() / 180.0); };
 	void applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const;
 	void applyViewMatrix(std::shared_ptr<MatrixStack> MV) const;
-	void raycast(std::shared_ptr<MatrixStack> P, std::shared_ptr<MatrixStack> V);
-	void cast();
+	void cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, glm::mat4& P, glm::mat4& V, glm::mat4& C);
+	void raycast();
 };
 
 #endif

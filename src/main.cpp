@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << "Number of vertices: " << posBuf.size()/3 << endl;
-	camera.cast();
+	camera.raycast();
 
 
 	return 0;
