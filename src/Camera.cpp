@@ -50,7 +50,7 @@ void Camera::applyViewMatrix(std::shared_ptr<MatrixStack> MV) const
 }
 
 
-void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
+/*void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
 
 	vec3 ray[2];
 
@@ -85,9 +85,44 @@ void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>
 	//std::cout << "x: " << ray[0].x << " y: " << ray[0].y << " z: " << ray[0].z << "\n";
 	std::cout << "x: " << ray[1].x << " y: " << ray[1].y << " z: " << ray[1].z << "\n";
 	//std::cout << "x: " << test.x << " y: " << test.y << " z: " << test.z << "\n";
+}*/
+
+void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
+
+
+
+	ray[0] = vec3(C[3][0], C[3][1], C[3][2]);
+
+
+	//float y = tan(degRad(45));
+
+	//std::cout << "y: " << y << "\n";
+
+	vec2 ndc = { // normalized device coords
+		((2.0 * px) / (width))-1.0,
+		1.0 - ((2.0 * py) / (height))
+	};
+
+	//std::cout << ndc.x << " " << ndc.y << "\n";
+
+	vec4 clip = { ndc.x,ndc.y,-1.0,1.0 }; // clip coords
+
+	vec4 eye = glm::inverse(P) * clip; // eye coords
+	eye.w = 1;
+
+	//std::cout << eye.x << " " << eye.y << " " << eye.z << "\n";
+
+	vec4 world = C * eye; // position in world coords
+
+	//std::cout << world.x << " " << world.y << " " << world.z << "\n";
+
+	vec4 dir = normalize(world - vec4(ray[0], 1.0)); // direction in world coords
+	ray[1] = dir;
+
+	
 }
 
-void Camera::raycast() {
+void Camera::raycast(const float& px, const float& py) {
 	std::shared_ptr<MatrixStack> MV = std::make_shared<MatrixStack>();
 	MV->loadIdentity();
 	applyProjectionMatrix(MV);
@@ -99,11 +134,14 @@ void Camera::raycast() {
 
 	mat4 V = MV->topMatrix();
 	mat4 C = inverse(V);
+
+	cast(px, py, MV, P, V, C);
 	
-	for (int j = 0; j < height; j++) {
-		for (int i = width; i > 0; i--) {
-			std::cout << i - 0.5 << " " << j + 0.5 << " ";
-			cast(i - 0.5, j + 0.5, MV, P, V, C);
-		}
-	}
+	//for (int j = 0; j < height; j++) {
+	//	for (int i = width; i > 0; i--) {
+	//		std::cout << i - 0.5 << " " << j + 0.5 << " ";
+	//		cast(i - 0.5, j + 0.5, MV, P, V, C);
+
+	//	}
+	//}
 }

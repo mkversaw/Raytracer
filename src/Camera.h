@@ -9,6 +9,7 @@
 
 #include <glm/gtc/constants.hpp>
 #include "MatrixStack.h"
+#include "Hit.h"
 
 using glm::vec3;
 
@@ -39,7 +40,9 @@ struct Camera {
 	void applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const;
 	void applyViewMatrix(std::shared_ptr<MatrixStack> MV) const;
 	void cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, glm::mat4& P, glm::mat4& V, glm::mat4& C);
-	void raycast();
+	void raycast(const float& px, const float& py);
+
+	vec3 ray[2]; // !!!!!!
 };
 
 #endif

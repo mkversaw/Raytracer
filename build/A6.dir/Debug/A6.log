@@ -1,11 +1,5 @@
-﻿  Camera.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(37,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(38,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(106,20): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.cpp(106,11): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-  main.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(37,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(38,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\main.cpp(76,34): warning C4834: discarding return value of function with 'nodiscard' attribute
-  Generating Code...
+﻿  main.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(38,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(39,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.h(29,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   A6.vcxproj -> C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\build\Debug\A6.exe
