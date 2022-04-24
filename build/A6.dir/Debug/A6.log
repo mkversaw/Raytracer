@@ -1,12 +1,6 @@
-﻿  Camera.cpp
+﻿  Scene.cpp
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Scene.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Shape.cpp
-  Sphere.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(25,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   main.cpp
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data

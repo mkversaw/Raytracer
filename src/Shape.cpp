@@ -9,7 +9,7 @@ Shape::Shape() {
 
 Shape::Shape(const vec3& p, const vec3& r, const vec3& s, const vec3& c) : pos(p), rotation(r), scale(s), color(c) {}
 
-void Shape::raycast()
+void Shape::raycast(vector<vec3>& ray, vector<Hit>& hits)
 {
 	std::cout << "how did you get here?\n";
 }

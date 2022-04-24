@@ -22,10 +22,8 @@ using std::make_shared;
 
 struct Scene {
 
-	Sphere test;
-
 	int width, height;
-	vector<Shape> shapes; // sphere , plane , triangle
+	vector<shared_ptr<Shape>> shapes; // must contain ptrs for polymorphism to function!
 	vector<Light> lights;
 	vector<Hit> hits;
 

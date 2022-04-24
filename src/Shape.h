@@ -26,8 +26,10 @@ struct Shape {
 	vec3 color; // defaults to red
 
 	Shape();
+	virtual ~Shape() {}
+
 	Shape(const vec3& p, const vec3& r, const vec3& s, const vec3& c);
-	virtual void raycast();
+	virtual void raycast(vector<vec3>& ray, vector<Hit>& hits);
 };
 
 #endif

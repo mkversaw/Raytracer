@@ -15,7 +15,7 @@ Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3&
 	this->radius = rad;
 }
 
-void Sphere::raycast(vector<vec3>& ray, std::vector<Hit>& hits) {
+void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
 
 	////////// Task 3: Find sphere intersection(s)
 
