@@ -17,12 +17,13 @@ Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3&
 
 void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
 
-	////////// Task 3: Find sphere intersection(s)
+	////////// Task 3: Find UNIT sphere intersection(s)
 
 	float a = dot(ray[1], ray[1]);
 	float b = 2 * dot(ray[1], ray[0]);
 	float c2 = dot(ray[0], ray[0]) - 1;
 	float d = pow(b, 2) - 4 * a * c2;
+
 	// assume there are no intersections, or two intersections
 	if (d > 0) { // two intersections
 		float t1 = (-b - sqrt(d)) / (2 * a);

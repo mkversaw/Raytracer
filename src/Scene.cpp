@@ -7,7 +7,7 @@ Scene::Scene() {
 	std::cout << "default constructor used, caution is advised!\n";
 }
 
-Scene::Scene(const int width, const int height, const string filename) : width(width), height(height), filename(filename) {
+Scene::Scene(const int width, const int height) : width(width), height(height) {
 	std::cout << "creating scene with width: " << width << " and height: " << height << "\n";
 }
 
@@ -38,6 +38,6 @@ void Scene::render() {
 	}
 }
 
-void Scene::output() {
+void Scene::output(const string& filename) {
 	image->writeToFile(filename);
 }

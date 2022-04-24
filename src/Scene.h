@@ -28,18 +28,17 @@ struct Scene {
 	vector<Hit> hits;
 
 	shared_ptr<Image> image;
-	string filename;
 
 	shared_ptr<Camera> camera;
 
 	Scene();
-	Scene(const int width, const int height, const string);
+	Scene(const int width, const int height);
 
 	void init();
 
 	void render();
 
-	void output();
+	void output(const string& filename);
 
 };
 

@@ -96,19 +96,18 @@ vector<vec3> Camera::getRay(const float px, const float py) {
 	vector<vec3> ray = { vec3(C[3][0], C[3][1], C[3][2]), vec3(1, 1, 1) }; // place holder for ray[1]
 
 	vec2 ndc = { // normalized device coords
-		((2.0 * px) / (width)) - 1.0,
-		1.0 - ((2.0 * py) / (height))
+		((2.0f * px) / (width)) - 1.0f,
+		1.0f - ((2.0f * py) / (height))
 	};
 
-	vec4 clip = { ndc.x , ndc.y , -1.0 , 1.0 }; // clip coords
+	vec4 clip = { ndc.x , ndc.y , -1.0f , 1.0f }; // clip coords
 
 	vec4 eye = glm::inverse(P) * clip; // eye coords
-	eye.w = 1;
+	eye.w = 1.0f;
 
 	vec4 world = C * eye; // position in world coords
 
-	vec4 dir = normalize(world - vec4(ray[0] , 1.0)); // direction in world coords
-	ray[1] = dir;
+	ray[1] = normalize(world - vec4(ray[0] , 1.0f)); // direction in world coords
 
 	return ray;
 }
