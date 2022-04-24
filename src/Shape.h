@@ -20,7 +20,11 @@ struct Shape {
 	vec3 rotation;
 	vec3 scale;
 	vec3 color = {1,0,0}; // default to red
-	Shape() {};
+	Shape() {
+		pos = { -1,-1,-1 };
+		rotation = pos;
+		scale = pos;
+	};
 	Shape(const vec3& p, const vec3& r, const vec3& s) : pos(p), rotation(r), scale(s) {};
 	virtual void raycast() {};
 

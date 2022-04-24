@@ -8,6 +8,7 @@
 #include "Image.h"
 #include "Shape.h"
 #include "Sphere.h"
+#include "Scene.h"
 
 // This allows you to skip the `std::` in front of C++ standard library
 // functions. You can also say `using std::cout` to be more selective.
@@ -20,9 +21,10 @@ shared_ptr<Image> image;
 
 int width, height;
 
-Camera camera(3,3);
+Camera camera;
 
 static void init() {
+	camera = Camera(3, 3);
 	image = make_shared<Image>(width, height);
 	test = Sphere(vec3(0,0,0),vec3(1,1,1),vec3(0,0,0)); // pos , rot , scale
 }
@@ -61,6 +63,7 @@ int main(int argc, char **argv)
 	for (auto& h : hits) { // only keep the one with the smallest t, then record its parameters
 		cout << "x: " << h.x << " " << "n: " << h.n << " " << "t: " << h.t << "\n";
 	}
+
 
 	image->writeToFile(filename);
 	return 0;
