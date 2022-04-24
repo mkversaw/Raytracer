@@ -14,7 +14,7 @@ Scene::Scene(const int width, const int height, const string filename) : width(w
 void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
 	camera = Camera(width,height); // create the camera
-	test = Sphere(vec3(0, 0, 0), vec3(1, 1, 1), vec3(0, 0, 0),1); // pos , rot , scale , RADIUS
+	test = Sphere(vec3(0, 0, 0), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , rot , scale , RADIUS
 }
 
 void Scene::render() {

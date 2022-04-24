@@ -6,7 +6,7 @@
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;
-using glm::mat4;
+
 
 Camera::Camera() {
 	position = { 0.0f,0.0f,5.0f }; // default position of (0,0,5)
@@ -30,6 +30,8 @@ Camera::Camera(const int& w, const int& h) {
 
 	znear = 0.1f;
 	zfar = 1000.0f;
+
+	MV = std::make_shared<MatrixStack>(); // !
 }
 
 void Camera::applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const {
@@ -43,17 +45,11 @@ void Camera::applyViewMatrix(std::shared_ptr<MatrixStack> MV) const
 	// up: the Y vec (0,1,0)
 
 	MV->multMatrix(glm::lookAt(position, position + glm::vec3(forward.x, rotation.y, forward.z), up));
-
-	//MV->translate(position);
-	//MV->rotate(rotation.y, glm::vec3(1.0f, 0.0f, 0.0f));
-	//MV->rotate(rotation.x, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 
 /*void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
 
-	vec3 ray[2];
-
 	ray[0] = vec3(C[3][0], C[3][1], C[3][2]);
 
 
@@ -81,59 +77,39 @@ void Camera::applyViewMatrix(std::shared_ptr<MatrixStack> MV) const
 
 	vec4 dir = normalize(world - vec4(ray[0], 1.0)); // direction in world coords
 	ray[1] = dir;
-	//vec4 test = world - vec4((vec3(0, 1, 0), 1.0));
-	//std::cout << "x: " << ray[0].x << " y: " << ray[0].y << " z: " << ray[0].z << "\n";
-	std::cout << "x: " << ray[1].x << " y: " << ray[1].y << " z: " << ray[1].z << "\n";
-	//std::cout << "x: " << test.x << " y: " << test.y << " z: " << test.z << "\n";
+
 }*/
 
-void Camera::cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
-
-
-
+vec3* Camera::cast(const float px, const float py, std::shared_ptr<MatrixStack>& MV, mat4& P, mat4& V, mat4& C) {
 	ray[0] = vec3(C[3][0], C[3][1], C[3][2]);
 
-
-	//float y = tan(degRad(45));
-
-	//std::cout << "y: " << y << "\n";
-
 	vec2 ndc = { // normalized device coords
-		((2.0 * px) / (width))-1.0,
+		((2.0 * px) / (width)) - 1.0,
 		1.0 - ((2.0 * py) / (height))
 	};
-
-	//std::cout << ndc.x << " " << ndc.y << "\n";
 
 	vec4 clip = { ndc.x,ndc.y,-1.0,1.0 }; // clip coords
 
 	vec4 eye = glm::inverse(P) * clip; // eye coords
 	eye.w = 1;
 
-	//std::cout << eye.x << " " << eye.y << " " << eye.z << "\n";
-
 	vec4 world = C * eye; // position in world coords
-
-	//std::cout << world.x << " " << world.y << " " << world.z << "\n";
 
 	vec4 dir = normalize(world - vec4(ray[0], 1.0)); // direction in world coords
 	ray[1] = dir;
 
-	
+	return ray;
 }
 
-void Camera::raycast(const float& px, const float& py) {
-	std::shared_ptr<MatrixStack> MV = std::make_shared<MatrixStack>();
-	MV->loadIdentity();
+void Camera::camInit() {
+	MV->loadIdentity(); // resets MV without deleting its pointer
 	applyProjectionMatrix(MV);
 
-	mat4 P = MV->topMatrix();
+	P = MV->topMatrix();
 
 	MV->loadIdentity();
 	applyViewMatrix(MV);
 
-	mat4 V = MV->topMatrix();
-	mat4 C = inverse(V);
-
-	cast(px, py, MV, P, V, C);
+	V = MV->topMatrix();
+	C = glm::inverse(V);
 }

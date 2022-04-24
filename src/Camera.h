@@ -12,6 +12,7 @@
 #include "Hit.h"
 
 using glm::vec3;
+using glm::mat4;
 
 struct Camera {
 
@@ -28,6 +29,11 @@ struct Camera {
 	float znear;
 	float zfar;
 
+	std::shared_ptr<MatrixStack> MV;
+	glm::mat4 P;
+	glm::mat4 V;
+	glm::mat4 C;
+
 	glm::vec3 up = { 0.0f, 1.0f, 0.0f }; // positive y-dir
 	glm::vec3 forward = { 0.0f,0.0f,-1.0f };
 
@@ -39,8 +45,8 @@ struct Camera {
 	void setFOV(const float& degree) { fov = ( degree * glm::pi<float>() / 180.0); };
 	void applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const;
 	void applyViewMatrix(std::shared_ptr<MatrixStack> MV) const;
-	void cast(const float& px, const float& py, std::shared_ptr<MatrixStack>& MV, glm::mat4& P, glm::mat4& V, glm::mat4& C);
-	void raycast(const float& px, const float& py);
+	vec3* cast(const float px, const float py, std::shared_ptr<MatrixStack>& MV, glm::mat4& P, glm::mat4& V, glm::mat4& C);
+	void camInit();
 
 	vec3 ray[2]; // !!!!!!
 };
