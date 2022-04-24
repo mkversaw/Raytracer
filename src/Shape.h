@@ -4,11 +4,14 @@
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+
+#include <vector>
+#include <iostream>
 
 #include "hit.h"
 #include "MatrixStack.h"
-#include <vector>
-#include <iostream>
+
 
 using glm::vec2;
 using glm::vec3;

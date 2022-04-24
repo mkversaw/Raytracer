@@ -6,15 +6,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include <iostream>
-#include <vector>
+#include <string>
+
 #include "Shape.h"
 #include "Hit.h"
 #include "Sphere.h"
 #include "Camera.h"
 #include "Image.h"
 #include "Light.h"
-#include <string>
 
 using std::string;
 using std::vector;
@@ -33,7 +32,7 @@ struct Scene {
 	shared_ptr<Image> image;
 	string filename;
 
-	Camera camera;
+	shared_ptr<Camera> camera;
 
 	Scene();
 	Scene(const int width, const int height, const string);

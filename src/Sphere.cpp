@@ -5,17 +5,17 @@ Sphere::Sphere() {
 	rotation = { 0,0,0 };
 	scale = { 1,1,1 };
 	color = { 1,0,0 };
-	radius = 1;
+	radius = 1.0f;
 }
 
-Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3& r = { 0,0,0 }, const float rad = 1) {
+Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3& r = { 0,0,0 }, const float rad = 1.0f) {
 	this->pos = p;
 	this->rotation = r;
 	this->scale = s;
 	this->radius = rad;
 }
 
-void Sphere::raycast(const vec3 (&ray)[2], std::vector<Hit>& hits) {
+void Sphere::raycast(vector<vec3>& ray, std::vector<Hit>& hits) {
 
 	////////// Task 3: Find sphere intersection(s)
 

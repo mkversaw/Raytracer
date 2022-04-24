@@ -7,10 +7,12 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
+#include <vector>
 #include <glm/gtc/constants.hpp>
 #include "MatrixStack.h"
 #include "Hit.h"
 
+using std::vector;
 using glm::vec3;
 using glm::mat4;
 
@@ -43,12 +45,12 @@ struct Camera {
 	void setWidthHeight(const int& w, const int& h) { width = w; height = h; };
 	float degRad(const float& degree) { return (degree * glm::pi<float>() / 180.0); };
 	void setFOV(const float& degree) { fov = ( degree * glm::pi<float>() / 180.0); };
+
 	void applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const;
 	void applyViewMatrix(std::shared_ptr<MatrixStack> MV) const;
-	vec3* cast(const float px, const float py, std::shared_ptr<MatrixStack>& MV, glm::mat4& P, glm::mat4& V, glm::mat4& C);
-	void camInit();
 
-	vec3 ray[2]; // !!!!!!
+	void camInit();
+	vector<vec3> getRay(const float px, const float py);
 };
 
 #endif
