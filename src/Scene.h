@@ -10,7 +10,10 @@
 
 #include "Shape.h"
 #include "Hit.h"
+
 #include "Sphere.h"
+#include "Plane.h"
+
 #include "Camera.h"
 #include "Image.h"
 #include "Light.h"
@@ -39,6 +42,8 @@ struct Scene {
 	void render();
 
 	void output(const string& filename);
+
+	int nearestHit();
 
 };
 

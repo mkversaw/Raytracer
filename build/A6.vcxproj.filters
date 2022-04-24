@@ -13,6 +13,9 @@
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\MatrixStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,6 +43,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\MatrixStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.h">

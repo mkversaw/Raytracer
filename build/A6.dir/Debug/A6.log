@@ -1,6 +1,22 @@
-﻿  Camera.cpp
+﻿  Plane.cpp
+  Scene.cpp
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,69): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,54): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,39): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
+          with
+          [
+              T=float
+          ]
   main.cpp
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data

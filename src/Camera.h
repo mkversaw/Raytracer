@@ -10,7 +10,6 @@
 #include <vector>
 #include <glm/gtc/constants.hpp>
 #include "MatrixStack.h"
-#include "Hit.h"
 
 using std::vector;
 using glm::vec3;
@@ -23,6 +22,7 @@ struct Camera {
 
 	vec3 position;
 	vec3 rotation;
+
 	float fov;
 	float aspect;
 	int width;
