@@ -14,7 +14,9 @@
 #include "Camera.h"
 #include "Image.h"
 #include "Light.h"
+#include <string>
 
+using std::string;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
@@ -27,14 +29,20 @@ struct Scene {
 	vector<Shape> shapes; // sphere , plane , triangle
 	vector<Light> lights;
 	vector<Hit> hits;
+
 	shared_ptr<Image> image;
+	string filename;
+
 	Camera camera;
 
-	Scene(const int& width, const int& height);
+	Scene();
+	Scene(const int width, const int height, const string);
 
 	void init();
 
 	void render();
+
+	void output();
 
 };
 

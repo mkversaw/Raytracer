@@ -1,16 +1,20 @@
 #include "Scene.h"
 
-Scene::Scene(const int& width, const int& height) {
-	this->width = width;
-	this->height = height;
+Scene::Scene() {
+	this->width = -1;
+	this->height = -1;
 
+	std::cout << "default constructor used, caution is advised!\n";
+}
+
+Scene::Scene(const int width, const int height, const string filename) : width(width), height(height), filename(filename) {
 	std::cout << "creating scene with width: " << width << " and height: " << height << "\n";
 }
 
 void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
 	camera = Camera(width,height); // create the camera
-	test = Sphere(vec3(0, 0, 0), vec3(1, 1, 1), vec3(0, 0, 0)); // pos , rot , scale
+	test = Sphere(vec3(0, 0, 0), vec3(1, 1, 1), vec3(0, 0, 0),1); // pos , rot , scale , RADIUS
 }
 
 void Scene::render() {
@@ -26,3 +30,6 @@ void Scene::render() {
 	}
 }
 
+void Scene::output() {
+	image->writeToFile(filename);
+}

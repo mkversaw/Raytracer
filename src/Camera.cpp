@@ -136,12 +136,4 @@ void Camera::raycast(const float& px, const float& py) {
 	mat4 C = inverse(V);
 
 	cast(px, py, MV, P, V, C);
-	
-	//for (int j = 0; j < height; j++) {
-	//	for (int i = width; i > 0; i--) {
-	//		std::cout << i - 0.5 << " " << j + 0.5 << " ";
-	//		cast(i - 0.5, j + 0.5, MV, P, V, C);
-
-	//	}
-	//}
 }
