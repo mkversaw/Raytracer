@@ -1,24 +1,26 @@
 ﻿  Plane.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Phong.h(21,7): error C2440: 'default argument': cannot convert from 'initializer list' to 'glm::vec3 &'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.cpp(7,2): error C2065: 'color': undeclared identifier
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.cpp(7,23): error C3079: an initializer list cannot be used as the right operand of this assignment operator
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.cpp(14,8): error C2039: 'color': is not a member of 'Plane'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.h(7): message : see declaration of 'Plane'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.cpp(26,25): error C2065: 'color': undeclared identifier
   Scene.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,69): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,54): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(48,39): warning C4244: 'argument': conversion from 'T' to 'unsigned char', possible loss of data
-          with
-          [
-              T=float
-          ]
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Phong.h(21,7): error C2440: 'default argument': cannot convert from 'initializer list' to 'glm::vec3 &'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(23,15): error C2039: 'color': is not a member of 'Plane'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Plane.h(7): message : see declaration of 'Plane'
+  Shape.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Phong.h(21,7): error C2440: 'default argument': cannot convert from 'initializer list' to 'glm::vec3 &'
+  Sphere.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Phong.h(21,7): error C2440: 'default argument': cannot convert from 'initializer list' to 'glm::vec3 &'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(7,2): error C2065: 'color': undeclared identifier
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(7,23): error C3079: an initializer list cannot be used as the right operand of this assignment operator
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(16,8): error C2039: 'color': is not a member of 'Sphere'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.h(7): message : see declaration of 'Sphere'
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(26,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(27,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(39,29): error C2065: 'color': undeclared identifier
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(40,29): error C2065: 'color': undeclared identifier
   main.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(46,72): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h(47,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Phong.h(21,7): error C2440: 'default argument': cannot convert from 'initializer list' to 'glm::vec3 &'
   Generating Code...
-  A6.vcxproj -> C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\build\Debug\A6.exe

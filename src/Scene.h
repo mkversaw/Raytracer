@@ -45,6 +45,8 @@ struct Scene {
 
 	int nearestHit();
 
+	void setPix(int x, int y, const vec3& color);
+
 };
 
 #endif

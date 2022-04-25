@@ -4,7 +4,6 @@ Sphere::Sphere() {
 	pos = { 0,0,0 };
 	rotation = { 0,0,0 };
 	scale = { 1,1,1 };
-	color = { 127.5f,0,0 };
 	radius = 1.0f;
 }
 
@@ -13,7 +12,6 @@ Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3&
 	this->rotation = r;
 	this->scale = s;
 	this->radius = rad;
-	this->color = { 0,127.5f,0 };
 }
 
 void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
@@ -36,8 +34,8 @@ void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
 		vec3 n1 = (x1 - pos) / radius;
 		vec3 n2 = (x2 - pos) / radius;
 
-		hits.push_back({ x1,n1,t1,color }); 
-		hits.push_back({ x2,n2,t2,color });
+		hits.push_back({ x1,n1,t1,Phong }); 
+		hits.push_back({ x2,n2,t2,Phong });
 	}
 
 }

@@ -20,7 +20,7 @@ void Scene::init() {
 	shapes.push_back(sphereTest);
 
 	shared_ptr<Plane> planeTest = make_shared<Plane>(vec3(0, 0, -4.0f), vec3(0, 0, 0), vec3(1, 1, 1)); // pos , rot , scale
-	planeTest -> color = { 0,0,0 };
+
 	shapes.push_back(planeTest); // virtual plane at z = -4;
 }
 
@@ -45,12 +45,20 @@ void Scene::render() {
 					std::cout << "hits wasn't empty, yet no hit found?\n";
 				}
 				else {
-					image->setPixel(i, j, hits[idx].c.x, hits[idx].c.y, hits[idx].c.z); // only draw the closest hit, if there IS a hit at all
+					setPix(i, j, hits[idx].c); // only draw the closest hit, if there IS a hit at all
 				}
 			}
 
 		}
 	}
+}
+
+void Scene::setPix(int x, int y, const vec3& color) {
+	image->setPixel(x, y,
+		(unsigned char) color.x,
+		(unsigned char) color.y,
+		(unsigned char) color.z
+	);
 }
 
 int Scene::nearestHit() {

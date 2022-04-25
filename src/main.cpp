@@ -34,14 +34,14 @@ int main(int argc, char **argv)
 	scene = make_shared<Scene>(width,height);
 	scene -> init();
 
-	scene->shapes[0]->debug();
+	//scene->shapes[0]->debug();
 
-	scene->shapes[0]->shift('f', 0.5f);
+	//scene->shapes[0]->shift('f', 0.5f);
 
 	scene -> render();
 	scene -> output(filename);
 
-	scene->shapes[0]->debug();
+	//scene->shapes[0]->debug();
 	
 	return 0;
 }

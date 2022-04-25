@@ -43,8 +43,8 @@ struct Camera {
 	void setAspect(const float& a) { aspect = a; };
 	void setRotation(const vec3& r) { rotation = r; };
 	void setWidthHeight(const int& w, const int& h) { width = w; height = h; };
-	float degRad(const float& degree) { return (degree * glm::pi<float>() / 180.0); };
-	void setFOV(const float& degree) { fov = ( degree * glm::pi<float>() / 180.0); };
+	float degRad(const float& degree) { return (degree * glm::pi<float>() / 180.0f); };
+	void setFOV(const float& degree) { fov = ( degree * glm::pi<float>() / 180.0f); };
 
 	void applyProjectionMatrix(std::shared_ptr<MatrixStack> P) const;
 	void applyViewMatrix(std::shared_ptr<MatrixStack> MV) const;
