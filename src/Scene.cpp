@@ -57,9 +57,11 @@ void Scene::render() {
 	int idx;
 
 	for (int j = 0; j < height; j++) { // for every pixel
-		for (int i = width - 1; i >= 0; i--) {
+		for (int i = width - 1; i > 0; i--) {
 			hits.clear();
-			ray = camera -> getRay(i - 0.5f, j + 0.5f);
+			//ray = camera -> getRay(i - 0.5f, j + 0.5f);
+
+			ray = camera->debugRay(i - 0.5f, j + 0.5f);
 
 			for (auto& shape : shapes) { // raycast for every shape in scene
 				shape->raycast(ray, hits);
@@ -73,8 +75,11 @@ void Scene::render() {
 				}
 				else {
 
-					//vec3 col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
-					setPix(i, j, 255.0f*hits[idx].phong.kd); // only draw the closest hit, if there IS a hit at all
+					vec3 col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
+
+					//cout << col << "\n";
+					//setPix(i, j, 255.0f*hits[idx].phong.kd); // only draw the closest hit, if there IS a hit at all
+					setPix(i, j, col); // only draw the closest hit, if there IS a hit at all
 				}
 			}
 
@@ -85,30 +90,40 @@ void Scene::render() {
 vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	// assume pos and norm are already in cam space?
 	vec3 color = phong.ka;
-	vec3 eye = normalize(0.0f - camera->position); // fragPos - camPos
+	vec3 n = normalize(norm);
+
+	n.x = glm::clamp(n.x, 0.0f, 1.0f);
+	n.y = glm::clamp(n.y, 0.0f, 1.0f);
+	n.z = glm::clamp(n.z, 0.0f, 1.0f);
+
+	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
 	for (auto& light : lights) { // for each light
-		vec3 l = normalize(light->pos - camera->position); // light vector
-		vec3 cd = phong.kd * std::max(0.0f, dot(l, norm)); // diffuse
+		vec3 l = normalize(light->pos - pos); // light vector
+		vec3 cd = phong.kd * std::max(0.0f, dot(l, n)); // diffuse
 
 		vec3 h = normalize(l + eye); // halfway vec between eye and light vecs
 
-		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, norm)), phong.s); // specular
+		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, n)), phong.s); // specular
 
-		cout << "ka: " << phong.ka << "\n";
-		cout << "ks: " << phong.ks << "\n";
-		cout << "kd: " << phong.kd << "\n";
-	
-		cout << "eye: " << eye << "\n";
-		cout << "l: " << eye << "\n";
-		cout << "cd: " << eye << "\n";
-		cout << "h: " << eye << "\n";
-		cout << "cs: " << eye << "\n";
+		//cout << "ka: " << phong.ka << "\n";
+		//cout << "ks: " << phong.ks << "\n";
+		//cout << "kd: " << phong.kd << "\n";
+		//
+		//cout << "eye: " << eye << "\n";
+		//cout << "l: " << eye << "\n";
+		//cout << "cd: " << eye << "\n";
+		//cout << "h: " << eye << "\n";
+		//cout << "cs: " << eye << "\n";
 
 		color += (light->color * (cd + cs));
 	}
 
-
+	// CLAMP THE COLOR
+	color *= 255.0f;
+	color.x = glm::clamp(color.x, 0.0f, 255.0f);
+	color.y = glm::clamp(color.y, 0.0f, 255.0f);
+	color.z = glm::clamp(color.z, 0.0f, 255.0f);
 
 	return color;
 }

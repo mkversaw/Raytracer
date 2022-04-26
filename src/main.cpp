@@ -32,23 +32,33 @@ int main(int argc, char **argv)
 	height = atoi(argv[3]);
 
 	vec3 dir;
+	float px,py;
 
-	for (int j = 0; j < height; j++) { // for every pixel
-		for (int i = width - 1; i >= 0; i--) {
-			
-		}
-	}
+	//for (int j = 0; j < height; j++) { // for every pixel
+	//	for (int i = width - 1; i >= 0; i--) {
+	//		cout << i + 0.5 << " " << j + 0.5 << "\n";
+	//		px = i + 0.5;
+	//		py = j + 0.5;
+	//		dir = { px,px * tan(45 / width),-1 };
+	//		cout << dir << "\n";
+	//	}
+	//}
 
+	//for (int j = 0; j < height; j++) { // for every pixel
+	//	for (int i = width - 1; i > 0; i--) {
+	//		cout << i - 0.5f << " " << j + 0.5f << "\n";
+	//	}
+	//}
 
-	//scene = make_shared<Scene>(width,height);
-	//scene -> init();
+	scene = make_shared<Scene>(width,height);
+	scene -> init();
 
 	//scene->shapes[0]->debug();
 
 	//scene->shapes[0]->shift('f', 0.5f);
 
-	//scene -> render();
-	//scene -> output(filename);
+	scene -> render();
+	scene -> output(filename);
 
 	//scene->shapes[0]->debug();
 	

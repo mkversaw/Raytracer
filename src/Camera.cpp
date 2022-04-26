@@ -115,25 +115,25 @@ vector<vec3> Camera::getRay(const float px, const float py) {
 
 
 vector<vec3> Camera::debugRay(const float px, const float py) {
-	//vector<vec3> ray = { vec3(C[3][0], C[3][1], C[3][2]), vec3(1, 1, 1) }; // place holder for ray[1]
+	vector<vec3> ray = {position, vec3(1, 1, 1) }; // place holder for ray[1]
+	
+	//vector<vec3> ray = { position,vec3(1,1,1) }; // all rays ome from cam pos
 
-	vector<vec3> ray = { position,vec3(1,1,1) }; // all rays ome from cam pos
-
-	vec3 dir = {};
-
-	/*vec2 ndc = { // normalized device coords
+	vec2 ndc = { // normalized device coords
 		((2.0f * px) / (width)) - 1.0f,
 		1.0f - ((2.0f * py) / (height))
 	};
 
 	vec4 clip = { ndc.x , ndc.y , -1.0f , 1.0f }; // clip coords
 
+	clip *= tan(fov / 2.0f);
+
 	vec4 eye = glm::inverse(P) * clip; // eye coords
 	eye.w = 1.0f;
 
 	vec4 world = C * eye; // position in world coords
 
-	ray[1] = normalize(world - vec4(ray[0], 1.0f)); // direction in world coords*/
+	ray[1] = normalize(world - vec4(ray[0], 1.0f)); // direction in world coords
 
 	return ray;
 }
