@@ -68,7 +68,7 @@ void Scene::render() {
 			}
 
 			if (!hits.empty()) {
-				idx = nearestHit();
+				idx = nearestHit(hits);
 
 				if (idx == -1) {
 					std::cout << "hits wasn't empty, yet no hit found?\n";
@@ -96,8 +96,32 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 
 	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
+	vector<Hit> shadowHits; // put here
+	vec3 dir;
+	int idx;
+	float dist;
+
 	for (auto& light : lights) { // for each light
-		vec3 l =  normalize(light->pos - pos); // light vector
+		// compute shadow:
+		
+		shadowHits.clear();
+
+		vec3 l = normalize(light->pos - pos); // light vector
+
+		dist = glm::distance(light->pos, (pos + (l * 0.5f)));
+
+		vector<vec3> ray = { (pos + (l * 0.5f)), (l) }; // direction -> end point - start point
+		//dist = abs(glm::distance(light->pos, pos));
+
+
+
+		for (auto& shape : shapes) { // raycast for every shape in scene
+			shape->shadowCast(ray, shadowHits, dist);
+		}
+
+		if (!shadowHits.empty()) {
+			continue; // skip coloring if in shadow
+		}
 
 		vec3 cd = phong.kd * std::max(0.0f, dot(l, n)); // diffuse
 
@@ -127,6 +151,11 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	return color;
 }
 
+void shadowCast(vec3& hitPos, vec3& lightPos) {
+	
+	
+}
+
 void Scene::clamper(vec3& v, float l, float h) {
 	v.x = glm::clamp(v.x, l, h);
 	v.y = glm::clamp(v.y, l, h);
@@ -141,13 +170,13 @@ void Scene::setPix(int x, int y, const vec3& color) {
 	);
 }
 
-int Scene::nearestHit() {
-	float minT = hits[0].t;
+int Scene::nearestHit(const vector<Hit>& hitVec) {
+	float minT = hitVec[0].t;
 	int minIdx = 0;
 
-	for (int i = 1; i < hits.size(); i++) {
-		if (hits[i].t < minT) {
-			minT = hits[i].t;
+	for (int i = 1; i < hitVec.size(); i++) {
+		if (hitVec[i].t < minT) {
+			minT = hitVec[i].t;
 			minIdx = i;
 		}
 	}

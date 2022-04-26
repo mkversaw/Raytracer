@@ -26,3 +26,14 @@ void Plane::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 	hits.push_back({ x,n,t,phong });
 
 }
+
+void Plane::shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist) {
+	vec3 c1 = pos; // center
+	vec3 n = { 0,0,1 }; // normal
+	float t = dot(n, (c1 - ray[0])) / (dot(n, ray[1]));
+	vec3 x = ray[0] + t * ray[1];
+
+	if (t > 0 && t < maxDist) {
+		hits.push_back({ x,n,t,phong });
+	}
+}

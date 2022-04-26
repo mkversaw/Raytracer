@@ -39,6 +39,8 @@ struct Shape {
 
 	virtual void raycast(const vector<vec3>& ray, vector<Hit>& hits);
 
+	virtual void shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist) { std::cout << "default shape shadowcast called!\n"; };
+
 	void shift(char dir, float factor);
 
 	virtual void debug(bool printColor);

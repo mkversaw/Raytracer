@@ -44,7 +44,7 @@ struct Scene {
 
 	void output(const string& filename);
 
-	int nearestHit();
+	int nearestHit(const vector<Hit>& hitVec);
 
 	void setPix(int x, int y, const vec3& color);
 
