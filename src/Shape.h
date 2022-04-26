@@ -35,7 +35,7 @@ struct Shape {
 	virtual ~Shape() {}
 
 	Shape(const vec3& p, const vec3& s, const vec3& r);
-	Shape(const vec3& p, const vec3& s, const vec3& r, const Phong& pho);
+	//Shape(const vec3& p, const vec3& s, const vec3& r, const Phong& pho);
 
 	virtual void raycast(const vector<vec3>& ray, vector<Hit>& hits);
 

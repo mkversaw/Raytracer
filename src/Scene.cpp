@@ -92,18 +92,17 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	vec3 color = phong.ka;
 	vec3 n = normalize(norm);
 
-	n.x = glm::clamp(n.x, 0.0f, 1.0f);
-	n.y = glm::clamp(n.y, 0.0f, 1.0f);
-	n.z = glm::clamp(n.z, 0.0f, 1.0f);
+	clamper(n,-1,1); // NORMALS SHOULD BE CLAMPED WITH [-1 TO 1] !!!
 
 	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
 	for (auto& light : lights) { // for each light
-		vec3 l = normalize(light->pos - pos); // light vector
+		vec3 l =  normalize(light->pos - pos); // light vector
+
 		vec3 cd = phong.kd * std::max(0.0f, dot(l, n)); // diffuse
 
-		vec3 h = normalize(l + eye); // halfway vec between eye and light vecs
-
+		vec3 h =  normalize(l + eye); // halfway vec between eye and light vecs
+		
 		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, n)), phong.s); // specular
 
 		//cout << "ka: " << phong.ka << "\n";
@@ -116,18 +115,23 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 		//cout << "h: " << eye << "\n";
 		//cout << "cs: " << eye << "\n";
 
-		color += (light->color * (cd + cs));
+		color += (cd + cs);
+
 	}
 
 	// CLAMP THE COLOR
+	clamper(color);
 	color *= 255.0f;
-	color.x = glm::clamp(color.x, 0.0f, 255.0f);
-	color.y = glm::clamp(color.y, 0.0f, 255.0f);
-	color.z = glm::clamp(color.z, 0.0f, 255.0f);
+
 
 	return color;
 }
 
+void Scene::clamper(vec3& v, float l, float h) {
+	v.x = glm::clamp(v.x, l, h);
+	v.y = glm::clamp(v.y, l, h);
+	v.z = glm::clamp(v.z, l, h);
+}
 
 void Scene::setPix(int x, int y, const vec3& color) {
 	image->setPixel(x, y,

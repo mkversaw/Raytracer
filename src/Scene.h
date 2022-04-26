@@ -52,6 +52,7 @@ struct Scene {
 
 	void initDebug();
 
+	void clamper(vec3& v, float l = 0.0f, float h = 1.0f);
 };
 
 #endif
