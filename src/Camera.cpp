@@ -44,7 +44,7 @@ void Camera::applyViewMatrix(std::shared_ptr<MatrixStack> MV) const
 	// target: cam pos + "forward" dir (0,0,-1)
 	// up: the Y vec (0,1,0)
 
-	MV->multMatrix(glm::lookAt(position, position + glm::vec3(forward.x, rotation.y, forward.z), up));
+	MV->multMatrix(glm::lookAt(position, position + glm::vec3(forward.x, rotation.y, -forward.z), up));
 }
 
 void Camera::camInit() {
@@ -57,6 +57,7 @@ void Camera::camInit() {
 	applyViewMatrix(MV);
 
 	V = MV->topMatrix();
+
 	C = glm::inverse(V);
 }
 
@@ -112,12 +113,8 @@ vector<vec3> Camera::getRay(const float px, const float py) {
 	return ray;
 }
 
-
-
 vector<vec3> Camera::debugRay(const float px, const float py) {
 	vector<vec3> ray = {position, vec3(1, 1, 1) }; // place holder for ray[1]
-	
-	//vector<vec3> ray = { position,vec3(1,1,1) }; // all rays ome from cam pos
 
 	vec2 ndc = { // normalized device coords
 		((2.0f * px) / (width)) - 1.0f,
@@ -126,7 +123,7 @@ vector<vec3> Camera::debugRay(const float px, const float py) {
 
 	vec4 clip = { ndc.x , ndc.y , -1.0f , 1.0f }; // clip coords
 
-	clip *= tan(fov / 2.0f);
+	clip *= tan(-fov / 2.0f);
 
 	vec4 eye = glm::inverse(P) * clip; // eye coords
 	eye.w = 1.0f;
