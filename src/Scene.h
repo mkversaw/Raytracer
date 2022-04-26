@@ -22,12 +22,13 @@ using std::string;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
+using std::cout;
 
 struct Scene {
 
 	int width, height;
 	vector<shared_ptr<Shape>> shapes; // must contain ptrs for polymorphism to function!
-	vector<Light> lights;
+	vector<shared_ptr<Light>> lights;
 	vector<Hit> hits;
 
 	shared_ptr<Image> image;
@@ -46,6 +47,10 @@ struct Scene {
 	int nearestHit();
 
 	void setPix(int x, int y, const vec3& color);
+
+	vec3 shade(vec3& pos, vec3& norm, Phong& phong);
+
+	void initDebug();
 
 };
 

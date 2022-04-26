@@ -51,6 +51,8 @@ struct Camera {
 
 	void camInit();
 	vector<vec3> getRay(const float px, const float py);
+
+	vector<vec3> debugRay(const float px, const float py);
 };
 
 #endif

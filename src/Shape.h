@@ -19,7 +19,10 @@ using glm::vec4;
 using glm::mat4;
 using std::vector;
 
-
+inline std::ostream& operator<<(std::ostream& os, const vec3& v) { // helpful
+	os << v.x << " " << v.y << " " << v.z;
+	return os;
+}
 
 struct Shape {
 	vec3 pos; // center
@@ -31,10 +34,10 @@ struct Shape {
 	Shape();
 	virtual ~Shape() {}
 
-	Shape(const vec3& p, const vec3& r, const vec3& s);
-	Shape(const vec3& p, const vec3& r, const vec3& s, const Phong& pho);
+	Shape(const vec3& p, const vec3& s, const vec3& r);
+	Shape(const vec3& p, const vec3& s, const vec3& r, const Phong& pho);
 
-	virtual void raycast(vector<vec3>& ray, vector<Hit>& hits);
+	virtual void raycast(const vector<vec3>& ray, vector<Hit>& hits);
 
 	void shift(char dir, float factor);
 

@@ -14,7 +14,7 @@ Sphere::Sphere(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3&
 	this->radius = rad;
 }
 
-void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
+void Sphere::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 
 	////////// Task 4: Find scaled/translated sphere intersection(s)
 
@@ -34,8 +34,8 @@ void Sphere::raycast(vector<vec3>& ray, vector<Hit>& hits) {
 		vec3 n1 = (x1 - pos) / radius;
 		vec3 n2 = (x2 - pos) / radius;
 
-		hits.push_back({ x1,n1,t1,Phong }); 
-		hits.push_back({ x2,n2,t2,Phong });
+		hits.push_back({ x1,n1,t1,phong }); 
+		hits.push_back({ x2,n2,t2,phong });
 	}
 
 }

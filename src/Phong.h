@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 
+
 struct Phong {
 
 	glm::vec3 kd; // diffuse
@@ -18,7 +19,11 @@ struct Phong {
 		s = 100.0f;
 	}
 
-	Phong(glm::vec3& kd, glm::vec3& ks = {1.0f,1.0f,0.5f}, glm::vec3& ka = { 0.1f,0.1f,0.1f }, float s = 100.0f) : kd(kd), ks(ks), ka(ka), s(s) {};
+	Phong(glm::vec3& kd,
+		glm::vec3& ks = glm::vec3(1.0f,1.0f,0.5f),
+		glm::vec3& ka = glm::vec3(0.1f,0.1f,0.1f),
+		float s = 100.0f
+	) : kd(kd), ks(ks), ka(ka), s(s) {};
 
 };
 

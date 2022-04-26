@@ -15,10 +15,10 @@ int width, height;
 
 shared_ptr<Scene> scene;
 
-ostream& operator<<(ostream& os, const vec3& v) { // helpful
-	os << v.x << " " << v.y << " " << v.z;
-	return os;
-}
+//ostream& operator<<(ostream& os, const vec3& v) { // helpful
+//	os << v.x << " " << v.y << " " << v.z;
+//	return os;
+//}
 
 int main(int argc, char **argv)
 {
@@ -31,15 +31,24 @@ int main(int argc, char **argv)
 	width = atoi(argv[2]);
 	height = atoi(argv[3]);
 
-	scene = make_shared<Scene>(width,height);
-	scene -> init();
+	vec3 dir;
+
+	for (int j = 0; j < height; j++) { // for every pixel
+		for (int i = width - 1; i >= 0; i--) {
+			
+		}
+	}
+
+
+	//scene = make_shared<Scene>(width,height);
+	//scene -> init();
 
 	//scene->shapes[0]->debug();
 
 	//scene->shapes[0]->shift('f', 0.5f);
 
-	scene -> render();
-	scene -> output(filename);
+	//scene -> render();
+	//scene -> output(filename);
 
 	//scene->shapes[0]->debug();
 	

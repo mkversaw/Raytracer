@@ -16,12 +16,39 @@ void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
 	camera = make_shared<Camera>(width,height); // create the camera
 
-	shared_ptr<Sphere> sphereTest = make_shared<Sphere>(vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1), 1.0f); // pos , rot , scale , RADIUS
-	shapes.push_back(sphereTest);
+	shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f,1.0f,1.0f));
+	lights.push_back(light);
 
-	shared_ptr<Plane> planeTest = make_shared<Plane>(vec3(0, 0, -4.0f), vec3(0, 0, 0), vec3(1, 1, 1)); // pos , rot , scale
+	shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(-0.5f, -1.0f, 1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+	Phong red = Phong(vec3(1.0,0.0,0.0),vec3(1.0,1.0,0.5),vec3(0.1,0.1,0.1),100.0f);
+	redBall->phong = red;
+	shapes.push_back(redBall);
 
-	shapes.push_back(planeTest); // virtual plane at z = -4;
+	shared_ptr<Sphere> greenBall = make_shared<Sphere>(vec3(0.5f, -1.0f, -1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+	Phong green = Phong(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+	greenBall->phong = green;
+	shapes.push_back(greenBall);
+
+	shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(0.0f, 1.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+	Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+	blueBall->phong = blue;
+	shapes.push_back(blueBall);
+
+	//shared_ptr<Plane> planeTest = make_shared<Plane>(vec3(0, 0, -4.0f), vec3(1, 1, 1), vec3(0, 0, 0)); // pos , scale , rotation
+	//planeTest->phong = blue;
+	//planeTest->phong.kd = {1.0,1.0,1.0}; // white ?
+	
+	//shapes.push_back(planeTest); // virtual plane at z = -4;
+}
+
+void Scene::initDebug() {
+	image = make_shared<Image>(width, height); // create the image for output
+	camera = make_shared<Camera>(width, height); // create the camera
+
+	shared_ptr<Sphere> origin = make_shared<Sphere>(vec3(0, 0.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+	Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+	origin->phong = red;
+	shapes.push_back(origin);
 }
 
 void Scene::render() {
@@ -45,13 +72,47 @@ void Scene::render() {
 					std::cout << "hits wasn't empty, yet no hit found?\n";
 				}
 				else {
-					setPix(i, j, hits[idx].c); // only draw the closest hit, if there IS a hit at all
+
+					//vec3 col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
+					setPix(i, j, 255.0f*hits[idx].phong.kd); // only draw the closest hit, if there IS a hit at all
 				}
 			}
 
 		}
 	}
 }
+
+vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
+	// assume pos and norm are already in cam space?
+	vec3 color = phong.ka;
+	vec3 eye = normalize(0.0f - camera->position); // fragPos - camPos
+
+	for (auto& light : lights) { // for each light
+		vec3 l = normalize(light->pos - camera->position); // light vector
+		vec3 cd = phong.kd * std::max(0.0f, dot(l, norm)); // diffuse
+
+		vec3 h = normalize(l + eye); // halfway vec between eye and light vecs
+
+		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, norm)), phong.s); // specular
+
+		cout << "ka: " << phong.ka << "\n";
+		cout << "ks: " << phong.ks << "\n";
+		cout << "kd: " << phong.kd << "\n";
+	
+		cout << "eye: " << eye << "\n";
+		cout << "l: " << eye << "\n";
+		cout << "cd: " << eye << "\n";
+		cout << "h: " << eye << "\n";
+		cout << "cs: " << eye << "\n";
+
+		color += (light->color * (cd + cs));
+	}
+
+
+
+	return color;
+}
+
 
 void Scene::setPix(int x, int y, const vec3& color) {
 	image->setPixel(x, y,

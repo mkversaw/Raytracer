@@ -17,7 +17,7 @@ Shape::Shape(const vec3& p, const vec3& r, const vec3& s, const Phong& pho) : po
 	std::cout << "parameter shape construct 2 called!\n";
 }
 
-void Shape::raycast(vector<vec3>& ray, vector<Hit>& hits) {
+void Shape::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 	std::cout << "default shape raycast called!\n";
 }
 

@@ -14,7 +14,7 @@ Plane::Plane(const vec3& p = { 0,0,0 }, const vec3& s = { 1,1,1 }, const vec3& r
 
 }
 
-void Plane::raycast(vector<vec3>& ray, vector<Hit>& hits) {
+void Plane::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 
 	////////// Task 2: Find plane intersection
 
