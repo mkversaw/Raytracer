@@ -15,30 +15,6 @@ Scene::Scene(const int width, const int height) : width(width), height(height) {
 void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
 	camera = make_shared<Camera>(width,height); // create the camera
-
-	shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f,1.0f,1.0f));
-	lights.push_back(light);
-
-	shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(-0.5f, -1.0f, 1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
-	Phong red = Phong(vec3(1.0,0.0,0.0),vec3(1.0,1.0,0.5),vec3(0.1,0.1,0.1),100.0f);
-	redBall->phong = red;
-	shapes.push_back(redBall);
-
-	shared_ptr<Sphere> greenBall = make_shared<Sphere>(vec3(0.5f, -1.0f, -1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
-	Phong green = Phong(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
-	greenBall->phong = green;
-	shapes.push_back(greenBall);
-
-	shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(0.0f, 1.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
-	Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
-	blueBall->phong = blue;
-	shapes.push_back(blueBall);
-
-	//shared_ptr<Plane> planeTest = make_shared<Plane>(vec3(0, 0, -4.0f), vec3(1, 1, 1), vec3(0, 0, 0)); // pos , scale , rotation
-	//planeTest->phong = blue;
-	//planeTest->phong.kd = {1.0,1.0,1.0}; // white ?
-	
-	//shapes.push_back(planeTest); // virtual plane at z = -4;
 }
 
 void Scene::initDebug() {
@@ -139,7 +115,7 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 		//cout << "h: " << eye << "\n";
 		//cout << "cs: " << eye << "\n";
 
-		color += (cd + cs);
+		color += light -> intensity * (cd + cs);
 
 	}
 

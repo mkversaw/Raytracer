@@ -11,7 +11,7 @@
 // You should never do this in a header file.
 using namespace std;
 
-int width, height;
+int sceneSelect,width, height;
 
 shared_ptr<Scene> scene;
 
@@ -23,44 +23,48 @@ shared_ptr<Scene> scene;
 int main(int argc, char **argv)
 {
 	if (argc < 4) {
-		cout << "Usage: A6 filename width height\n";
+		cout << "Usage: A6 scene width filename/path\n";
 		return 0;
 	}
 
-	string filename(argv[1]);
+	sceneSelect = atoi(argv[1]);
+
 	width = atoi(argv[2]);
-	height = atoi(argv[3]);
+	height = width;
 
-	vec3 dir;
-	float px,py;
+	string filename(argv[3]);
 
-	//for (int j = 0; j < height; j++) { // for every pixel
-	//	for (int i = width - 1; i >= 0; i--) {
-	//		cout << i + 0.5 << " " << j + 0.5 << "\n";
-	//		px = i + 0.5;
-	//		py = j + 0.5;
-	//		dir = { px,px * tan(45 / width),-1 };
-	//		cout << dir << "\n";
-	//	}
-	//}
 
-	//for (int j = 0; j < height; j++) { // for every pixel
-	//	for (int i = width - 1; i > 0; i--) {
-	//		cout << i - 0.5f << " " << j + 0.5f << "\n";
-	//	}
-	//}
+	
 
 	scene = make_shared<Scene>(width,height);
 	scene -> init();
 
-	//scene->shapes[0]->debug();
+	if (sceneSelect == 1) {
+		shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f, 1.0f, 1.0f));
+		scene->lights.push_back(light);
 
-	//scene->shapes[0]->shift('f', 0.5f);
+		shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(-0.5f, -1.0f, 1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		redBall->phong = red;
+		scene->shapes.push_back(redBall);
+
+		shared_ptr<Sphere> greenBall = make_shared<Sphere>(vec3(0.5f, -1.0f, -1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong green = Phong(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		greenBall->phong = green;
+		scene->shapes.push_back(greenBall);
+
+		shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(0.0f, 1.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		blueBall->phong = blue;
+		scene->shapes.push_back(blueBall);
+	}
+	else if (sceneSelect == 2) {
+
+	}
 
 	scene -> render();
 	scene -> output(filename);
 
-	//scene->shapes[0]->debug();
-	
 	return 0;
 }
