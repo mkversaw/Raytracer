@@ -67,3 +67,17 @@ void Sphere::shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDis
 		}
 	}
 }
+
+void Sphere::setE() { // TODO
+	auto M = make_shared<MatrixStack>();
+	M->translate(pos);
+
+	M->rotate(rotation.x, 1, 0, 0); // handle rotation for x,y,z
+	M->rotate(rotation.y, 0, 1, 0);
+	M->rotate(rotation.z, 0, 0, 1);
+
+	M->scale(scale);
+
+	this->E = M->topMatrix();
+	this->invE = inverse(E);
+}

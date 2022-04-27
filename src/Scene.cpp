@@ -15,6 +15,10 @@ Scene::Scene(const int width, const int height) : width(width), height(height) {
 void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
 	camera = make_shared<Camera>(width,height); // create the camera
+
+	for (auto& shape : shapes) { // set the E matrix for each shape
+		shape->setE();
+	}
 }
 
 void Scene::initDebug() {

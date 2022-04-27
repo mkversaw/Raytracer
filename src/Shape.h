@@ -18,6 +18,9 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 using std::vector;
+using std::shared_ptr;
+using std::make_shared;
+using std::cout;
 
 inline std::ostream& operator<<(std::ostream& os, const vec3& v) { // helpful
 	os << v.x << " " << v.y << " " << v.z;
@@ -29,6 +32,9 @@ struct Shape {
 	vec3 rotation;
 	vec3 scale;
 	
+	glm::mat4 E;
+	glm::mat4 invE;
+
 	Phong phong;
 
 	Shape();
@@ -41,9 +47,11 @@ struct Shape {
 
 	virtual void shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist) { std::cout << "default shape shadowcast called!\n"; };
 
-	void shift(char dir, float factor);
+	virtual void setE() { std::cout << "default set E called!\n"; };
 
 	virtual void debug(bool printColor);
+
+	void shift(char dir, float factor);
 };
 
 inline void normRGB(vec3& color) { color /= 255.0f; } // helper function

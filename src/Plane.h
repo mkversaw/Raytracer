@@ -6,11 +6,12 @@
 
 struct Plane : Shape {
 
+	vec3 normal = { 0,1,0 }; // hard coded base normal w/ homogen 0
 	Plane();
 	Plane(const vec3& p, const vec3& s, const vec3& r);
 	void raycast(const vector<vec3>& ray, std::vector<Hit>& hits);
 	void shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist);
-	//void shift();
+	void setE();
 };
 
 #endif

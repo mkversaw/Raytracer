@@ -1,6 +1,6 @@
-﻿  Scene.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(100,7): warning C4101: 'dir': unreferenced local variable
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(101,6): warning C4101: 'idx': unreferenced local variable
-  main.cpp
+﻿  Plane.cpp
+  Scene.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(80,7): warning C4101: 'dir': unreferenced local variable
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(81,6): warning C4101: 'idx': unreferenced local variable
   Generating Code...
   A6.vcxproj -> C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\build\Debug\A6.exe
