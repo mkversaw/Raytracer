@@ -1,4 +1,2 @@
-﻿  Sphere.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(27,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp(89,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  main.cpp
   A6.vcxproj -> C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\build\Debug\A6.exe

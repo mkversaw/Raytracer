@@ -78,9 +78,40 @@ int main(int argc, char **argv)
 
 		shared_ptr<Plane> plane = make_shared<Plane>(vec3(0, -1.0, 0), vec3(1, 1, 1), vec3(glm::pi<float>() / 2, 0, 0)); // pos , scale , rotation
 		plane->phong = Phong(vec3(1.0,1.0,1.0),vec3(0.0,0.0,0.0),vec3(0.1,0.1,0.1),0.0f);
-		plane->phong.kd = {1.0,1.0,1.0}; // white ?
 
-		scene->shapes.push_back(plane); // virtual plane at z = -4;
+		scene->shapes.push_back(plane);
+	}
+	else if (sceneSelect == 4 || sceneSelect == 5) {
+		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 2.0f, 1.0f), 0.5f);
+		scene->lights.push_back(light1);
+
+		shared_ptr<Light> light2 = make_shared<Light>(vec3(0.5f, -0.5f, 0.0f), 0.5f);
+		scene->lights.push_back(light2);
+
+		shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(0.5f, -0.7f, 0.5f), vec3(0.3, 0.3, 0.3), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		redBall->phong = red;
+		scene->shapes.push_back(redBall);
+
+		shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(1.0f, -0.7f, 0.0f), vec3(0.3, 0.3, 0.3), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		blueBall->phong = blue;
+		scene->shapes.push_back(blueBall);
+
+		shared_ptr<Plane> floor = make_shared<Plane>(vec3(0, -1.0, 0), vec3(1, 1, 1), vec3(glm::pi<float>() / 2, 0, 0)); // pos , scale , rotation
+		floor->phong = Phong(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), vec3(0.1, 0.1, 0.1), 0.0f);
+		scene->shapes.push_back(floor);
+
+		shared_ptr<Plane> backWall = make_shared<Plane>(vec3(0, 0.0, -3.0), vec3(1, 1, 1), vec3(0, glm::pi<float>(), 0)); // pos , scale , rotation
+		backWall->phong = Phong(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), vec3(0.1, 0.1, 0.1), 0.0f);
+		backWall->normal = { 0,0,1 };
+		scene->shapes.push_back(backWall);
+
+		shared_ptr<Sphere> reflectiveBall1 = make_shared<Sphere>(vec3(-0.5f, 0.0f, -0.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		scene->shapes.push_back(reflectiveBall1);
+
+		shared_ptr<Sphere> reflectiveBall2 = make_shared<Sphere>(vec3(1.5f, 0.0f, -1.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		scene->shapes.push_back(reflectiveBall2);
 	}
 
 	scene->init();

@@ -80,6 +80,7 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	vec3 dir;
 	int idx;
 	float dist;
+	float shadowEpsilon = 0.1f;
 
 	for (auto& light : lights) { // for each light
 		// compute shadow:
@@ -88,9 +89,9 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 
 		vec3 l = normalize(light->pos - pos); // light vector
 
-		dist = glm::distance(light->pos, (pos + (l * 0.5f)));
+		dist = glm::distance(light->pos, (pos + (l * shadowEpsilon)));
 
-		vector<vec3> ray = { (pos + (l * 0.5f)), (l) }; // direction -> end point - start point
+		vector<vec3> ray = { (pos + (l * shadowEpsilon)), (l) }; // direction -> end point - start point
 		//dist = abs(glm::distance(light->pos, pos));
 
 
@@ -119,7 +120,7 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 		//cout << "h: " << eye << "\n";
 		//cout << "cs: " << eye << "\n";
 
-		color += light -> intensity * (cd + cs);
+		color += (light -> intensity) * (cd + cs);
 
 	}
 

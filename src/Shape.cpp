@@ -5,8 +5,6 @@ Shape::Shape() {
 	rotation = { 0,0,0 };
 	scale = { 1,1,1 };
 	phong = Phong(); // ?
-
-	std::cout << "default shape construct called!\n";
 }
 
 Shape::Shape(const vec3& p, const vec3& r, const vec3& s) : pos(p), rotation(r), scale(s) {
