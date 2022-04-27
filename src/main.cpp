@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	scene = make_shared<Scene>(width,height);
 
-	if (sceneSelect == 1) {
+	if (sceneSelect == 1 || sceneSelect == 2) {
 		shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f, 1.0f, 1.0f),1.0f);
 		scene->lights.push_back(light);
 
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 		blueBall->phong = blue;
 		scene->shapes.push_back(blueBall);
 	}
-	else if (sceneSelect == 2) {
+	else if (sceneSelect == 3) {
 		shared_ptr<Light> light1 = make_shared<Light>(vec3(1.0f, 2.0f, 2.0f),0.5f);
 		scene->lights.push_back(light1);
 
@@ -70,6 +70,11 @@ int main(int argc, char **argv)
 		Phong green = Phong(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
 		greenBall->phong = green;
 		scene->shapes.push_back(greenBall);
+
+		shared_ptr<Sphere> redEllipsoid = make_shared<Sphere>(vec3(0.5f, 0.0f, 0.5f), vec3(0.5, 0.6, 0.2), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		redEllipsoid->phong = red;
+		scene->shapes.push_back(redEllipsoid);
 
 		shared_ptr<Plane> plane = make_shared<Plane>(vec3(0, -1.0, 0), vec3(1, 1, 1), vec3(glm::pi<float>() / 2, 0, 0)); // pos , scale , rotation
 		plane->phong = Phong(vec3(1.0,1.0,1.0),vec3(0.0,0.0,0.0),vec3(0.1,0.1,0.1),0.0f);
