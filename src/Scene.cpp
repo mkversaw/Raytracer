@@ -34,6 +34,7 @@ void Scene::initDebug() {
 void Scene::render() {
 	camera->camInit(); // initialize the {P , MV , C , V} matrices
 	vector<vec3> ray; // size 2 : {pos,dir}
+	vec3 col;
 	int idx;
 
 	for (int j = 0; j < height; j++) { // for every pixel
@@ -54,9 +55,14 @@ void Scene::render() {
 					std::cout << "hits wasn't empty, yet no hit found?\n";
 				}
 				else {
+					
+					if (hits[idx].reflect) {
 
-					vec3 col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
-
+					}
+					else {
+						col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
+					}
+					
 					//cout << col << "\n";
 					//setPix(i, j, 255.0f*hits[idx].phong.kd); // only draw the closest hit, if there IS a hit at all
 					setPix(i, j, col); // only draw the closest hit, if there IS a hit at all
@@ -81,6 +87,7 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	int idx;
 	float dist;
 	float shadowEpsilon = 0.1f;
+	bool shadow;
 
 	for (auto& light : lights) { // for each light
 		// compute shadow:
@@ -92,15 +99,16 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 		dist = glm::distance(light->pos, (pos + (l * shadowEpsilon)));
 
 		vector<vec3> ray = { (pos + (l * shadowEpsilon)), (l) }; // direction -> end point - start point
-		//dist = abs(glm::distance(light->pos, pos));
 
-
-
+		shadow = false;
 		for (auto& shape : shapes) { // raycast for every shape in scene
-			shape->shadowCast(ray, shadowHits, dist);
+			if (shape->shadowCast(ray, dist)) {
+				shadow = true;
+				break;
+			}
 		}
 
-		if (!shadowHits.empty()) {
+		if (shadow) {
 			continue; // skip coloring if in shadow
 		}
 
@@ -132,9 +140,34 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	return color;
 }
 
-void shadowCast(vec3& hitPos, vec3& lightPos) {
+vec3 Scene::reflectRay(Hit& hit, int refLimit, int refs) {
 	
-	
+	// base case: return the current hit's shade() color
+	if (!hit.reflect || refs >= refLimit) {
+
+		return shade(hit.x, hit.n, hit.phong);
+	}
+
+	// recursive case: while hit is reflective AND refs is less than refLimit
+
+	// new ray's direction is the current hits normal?
+
+	float reflectEpsilon = 0.5f; // reduce self-reflection
+
+	vector<vec3> ray = { hit.x + (reflectEpsilon*hit.n),hit.n };
+	vector<Hit> reflectHits;
+
+	for (auto& shape : shapes) { // raycast for every shape in scene
+		shape->raycast(ray, reflectHits);
+	}
+
+	if (!hits.empty()) { // RECURSIVE CASE
+		int idx = nearestHit(reflectHits);
+		return shade(hit.x, hit.n, hit.phong) + reflectRay(reflectHits[idx], refLimit, ++refs); // return the base color + the reflected color
+	}
+	else { // if the reflection doesnt hit anything else then return the current hit's color
+		return shade(hit.x, hit.n, hit.phong);
+	}
 }
 
 void Scene::clamper(vec3& v, float l, float h) {

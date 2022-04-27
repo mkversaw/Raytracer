@@ -32,6 +32,8 @@ struct Shape {
 	vec3 rotation;
 	vec3 scale;
 	
+	bool reflective = false;
+
 	glm::mat4 E;
 	glm::mat4 invE;
 
@@ -45,7 +47,7 @@ struct Shape {
 
 	virtual void raycast(const vector<vec3>& ray, vector<Hit>& hits);
 
-	virtual void shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist) { std::cout << "default shape shadowcast called!\n"; };
+	virtual bool shadowCast(const vector<vec3>& ray, float maxDist) { std::cout << "default shape shadowcast called!\n"; return false; };
 
 	virtual void setE() { std::cout << "default set E called!\n"; };
 

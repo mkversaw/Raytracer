@@ -48,6 +48,8 @@ struct Scene {
 
 	vec3 shade(vec3& pos, vec3& norm, Phong& phong);
 
+	vec3 reflectRay(Hit& hit, int refLimit, int refs);
+
 	void initDebug();
 
 	void clamper(vec3& v, float l = 0.0f, float h = 1.0f);

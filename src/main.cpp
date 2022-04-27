@@ -108,9 +108,11 @@ int main(int argc, char **argv)
 		scene->shapes.push_back(backWall);
 
 		shared_ptr<Sphere> reflectiveBall1 = make_shared<Sphere>(vec3(-0.5f, 0.0f, -0.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		reflectiveBall1->reflective = true;
 		scene->shapes.push_back(reflectiveBall1);
 
 		shared_ptr<Sphere> reflectiveBall2 = make_shared<Sphere>(vec3(1.5f, 0.0f, -1.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		reflectiveBall2->reflective = true;
 		scene->shapes.push_back(reflectiveBall2);
 	}
 

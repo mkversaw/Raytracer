@@ -8,12 +8,13 @@
 
 struct Hit
 {
-	Hit() : x(0), n(0), t(0), phong() {}
-	Hit(const glm::vec3& x, const glm::vec3& n, float t, const Phong& pho) { this->x = x; this->n = n; this->t = t; this->phong = pho; }
+	Hit() : x(0), n(0), t(0), phong(), reflect(false) {}
+	Hit(const glm::vec3& x, const glm::vec3& n, float t, const Phong& pho, const bool refl) { this->x = x; this->n = n; this->t = t; this->phong = pho; this->reflect = refl; }
 	glm::vec3 x; // position
 	glm::vec3 n; // normal
 	float t; // distance
 
+	bool reflect;
 	Phong phong; // color
 };
 

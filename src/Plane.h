@@ -10,7 +10,7 @@ struct Plane : Shape {
 	Plane();
 	Plane(const vec3& p, const vec3& s, const vec3& r);
 	void raycast(const vector<vec3>& ray, std::vector<Hit>& hits);
-	void shadowCast(const vector<vec3>& ray, vector<Hit>& hits, float maxDist);
+	bool shadowCast(const vector<vec3>& ray, float maxDist);
 	void setE();
 };
 
