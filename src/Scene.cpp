@@ -40,7 +40,6 @@ void Scene::render() {
 	for (int j = 0; j < height; j++) { // for every pixel
 		for (int i = width - 1; i > 0; i--) {
 			hits.clear();
-			//ray = camera -> getRay(i - 0.5f, j + 0.5f);
 
 			ray = camera->debugRay(i - 0.5f, j + 0.5f);
 
@@ -57,7 +56,8 @@ void Scene::render() {
 				else {
 					
 					if (hits[idx].reflect) {
-
+						col = reflectRay(hits[idx], 1, 0,ray[1],ray[0]); // ray[1] is the incidence dir
+						//cout << col << "\n";
 					}
 					else {
 						col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
@@ -73,7 +73,7 @@ void Scene::render() {
 	}
 }
 
-vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
+vec3 Scene::shade(const vec3& pos, const vec3& norm, const Phong& phong) {
 	// assume pos and norm are already in cam space?
 	vec3 color = phong.ka;
 	vec3 n = normalize(norm);
@@ -133,41 +133,171 @@ vec3 Scene::shade(vec3& pos, vec3& norm, Phong& phong) {
 	}
 
 	// CLAMP THE COLOR
-	clamper(color);
+	//clamper(color);
 	color *= 255.0f;
 
 
 	return color;
 }
 
-vec3 Scene::reflectRay(Hit& hit, int refLimit, int refs) {
-	
-	// base case: return the current hit's shade() color
-	if (!hit.reflect || refs >= refLimit) {
+vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence, vec3& eye) {
 
-		return shade(hit.x, hit.n, hit.phong);
+	vec3 color = { 0,0,0 }; // base color of nothing
+
+	float reflectEpsilon = 0.05f; // reduce self-reflection
+
+	vec3 dir = normalize(glm::reflect(incidence, hit.n)); // dir = the reflection vector
+	clamper(dir,-1,1);
+	vec3 pos = hit.x + (dir * reflectEpsilon); // position = hit spot + epsilon shift
+
+	vector<vec3> ray = { pos,dir };
+
+	vector<Hit> reflectHits;
+
+
+	for (auto& shape : shapes) { // raycast for every shape in scene
+		shape->raycast(ray, reflectHits);
+	}
+
+	if (!reflectHits.empty()) { // RECURSIVE CASE
+		int minIdx;
+			float minT = INT_MAX;
+			minIdx = -1;
+
+			for (int i = 0; i < reflectHits.size(); i++) {
+				if (reflectHits[i].t < minT && reflectHits[i].t > 0) {
+					minT = reflectHits[i].t;
+					minIdx = i;
+				}
+			}
+
+			if (minIdx == -1 || reflectHits[minIdx].reflect) { // no phong found :(
+				return color;
+			}
+
+			return shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir ); // return the base color + the reflected color
+	}
+	return color;
+	/*
+
+	// base case: return black since were out of reflections
+
+	if (!hit.reflect) { // phong found, stop reflecting and return its color
+		return color + shadeReflect(hit.x, hit.n, hit.phong, eye);
+		//return color + shade(hit.x, hit.n, hit.phong);
+	}
+	else if (refs >= refLimit) {
+		return color;
 	}
 
 	// recursive case: while hit is reflective AND refs is less than refLimit
 
 	// new ray's direction is the current hits normal?
 
-	float reflectEpsilon = 0.5f; // reduce self-reflection
+	float reflectEpsilon = 0.1f; // reduce self-reflection
 
-	vector<vec3> ray = { hit.x + (reflectEpsilon*hit.n),hit.n };
+	vec3 dir = incidence - (2.0f * hit.n * dot(incidence, hit.n));
+	vec3 pos = hit.x + dir * reflectEpsilon;
+
+	vector<vec3> ray = { pos,dir };
+
 	vector<Hit> reflectHits;
 
 	for (auto& shape : shapes) { // raycast for every shape in scene
 		shape->raycast(ray, reflectHits);
 	}
 
-	if (!hits.empty()) { // RECURSIVE CASE
-		int idx = nearestHit(reflectHits);
-		return shade(hit.x, hit.n, hit.phong) + reflectRay(reflectHits[idx], refLimit, ++refs); // return the base color + the reflected color
+	if (!reflectHits.empty()) { // RECURSIVE CASE
+		int minIdx;
+		if (refs + 1 == refLimit) { // cant reflect again, look for a phong?
+			float minT = INT_MAX;
+			minIdx = -1;
+
+			for (int i = 0; i < reflectHits.size(); i++) {
+				if (reflectHits[i].t < minT && !reflectHits[i].reflect) {
+					minT = reflectHits[i].t;
+					minIdx = i;
+				}
+			}
+
+			if (minIdx == -1) { // no phong found :(
+				return color;
+			}
+		}
+		else {
+			minIdx = nearestHit(reflectHits);
+		}
+
+		return color + reflectRay(reflectHits[minIdx], refLimit, refs + 1, dir , dir); // return the base color + the reflected color
 	}
-	else { // if the reflection doesnt hit anything else then return the current hit's color
-		return shade(hit.x, hit.n, hit.phong);
+	else { // if the reflection doesnt hit anything else then end
+		return color;
+	}*/
+}
+
+vec3 Scene::shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, vec3& eye) {
+	// assume pos and norm are already in cam space?
+	vec3 color = phong.ka;
+	vec3 n = normalize(norm);
+
+	clamper(n, -1, 1); // NORMALS SHOULD BE CLAMPED WITH [-1 TO 1] !!!
+
+	vector<Hit> shadowHits; // put here
+	vec3 dir;
+	int idx;
+	float dist;
+	float shadowEpsilon = 0.1f;
+	bool shadow;
+
+	for (auto& light : lights) { // for each light
+		// compute shadow:
+
+		shadowHits.clear();
+
+		vec3 l = normalize(light->pos - pos); // light vector
+
+		dist = glm::distance(light->pos, (pos + (l * shadowEpsilon)));
+
+		vector<vec3> ray = { (pos + (l * shadowEpsilon)), (l) }; // direction -> end point - start point
+
+		shadow = false;
+		for (auto& shape : shapes) { // raycast for every shape in scene
+			if (shape->shadowCast(ray, dist)) {
+				shadow = true;
+				break;
+			}
+		}
+
+		if (shadow) {
+			continue; // skip coloring if in shadow
+		}
+
+		vec3 cd = phong.kd * std::max(0.0f, dot(l, n)); // diffuse
+
+		vec3 h = normalize(l + eye); // halfway vec between eye and light vecs
+
+		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, n)), phong.s); // specular
+
+		//cout << "ka: " << phong.ka << "\n";
+		//cout << "ks: " << phong.ks << "\n";
+		//cout << "kd: " << phong.kd << "\n";
+		//
+		//cout << "eye: " << eye << "\n";
+		//cout << "l: " << eye << "\n";
+		//cout << "cd: " << eye << "\n";
+		//cout << "h: " << eye << "\n";
+		//cout << "cs: " << eye << "\n";
+
+		color += (light->intensity) * (cd + cs);
+
 	}
+
+	// CLAMP THE COLOR
+	//clamper(color);
+	color *= 255.0f;
+
+
+	return color;
 }
 
 void Scene::clamper(vec3& v, float l, float h) {
@@ -176,7 +306,8 @@ void Scene::clamper(vec3& v, float l, float h) {
 	v.z = glm::clamp(v.z, l, h);
 }
 
-void Scene::setPix(int x, int y, const vec3& color) {
+void Scene::setPix(int x, int y, vec3& color) {
+	clamper(color, 0, 255);
 	image->setPixel(x, y,
 		(unsigned char) color.x,
 		(unsigned char) color.y,

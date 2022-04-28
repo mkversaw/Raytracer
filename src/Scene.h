@@ -44,11 +44,13 @@ struct Scene {
 
 	int nearestHit(const vector<Hit>& hitVec);
 
-	void setPix(int x, int y, const vec3& color);
+	void setPix(int x, int y, vec3& color);
 
-	vec3 shade(vec3& pos, vec3& norm, Phong& phong);
+	vec3 shade(const vec3& pos, const vec3& norm, const Phong& phong);
 
-	vec3 reflectRay(Hit& hit, int refLimit, int refs);
+	vec3 shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, vec3& eye);
+
+	vec3 reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence, vec3& eye);
 
 	void initDebug();
 
