@@ -145,9 +145,8 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 	vec3 color = { 0,0,0 }; // base color of nothing
 
 	float reflectEpsilon = 0.05f; // reduce self-reflection
-
-	vec3 dir = normalize(glm::reflect(incidence, hit.n)); // dir = the reflection vector
-	clamper(dir,-1,1);
+	
+	vec3 dir = normalize(glm::reflect(incidence, normalize(hit.n))); // dir = the reflection vector // MAKE SURE HIT.N IS NORMALIZED!!!!!!
 	vec3 pos = hit.x + (dir * reflectEpsilon); // position = hit spot + epsilon shift
 
 	vector<vec3> ray = { pos,dir };
@@ -165,7 +164,7 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 			minIdx = -1;
 
 			for (int i = 0; i < reflectHits.size(); i++) {
-				if (reflectHits[i].t < minT && reflectHits[i].t > 0) {
+				if (reflectHits[i].t < minT && reflectHits[i].t > 0) { // make sure .t is greater than 0 !!!
 					minT = reflectHits[i].t;
 					minIdx = i;
 				}
