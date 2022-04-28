@@ -50,7 +50,7 @@ struct Scene {
 
 	vec3 shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, vec3& eye);
 
-	vec3 reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence, vec3& eye);
+	vec3 reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence);
 
 	void initDebug();
 

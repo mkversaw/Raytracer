@@ -56,7 +56,7 @@ void Scene::render() {
 				else {
 					
 					if (hits[idx].reflect) {
-						col = reflectRay(hits[idx], 1, 0,ray[1],ray[0]); // ray[1] is the incidence dir
+						col = reflectRay(hits[idx], 3, 0, ray[1]); // ray[1] is the incidence dir
 						//cout << col << "\n";
 					}
 					else {
@@ -140,14 +140,63 @@ vec3 Scene::shade(const vec3& pos, const vec3& norm, const Phong& phong) {
 	return color;
 }
 
-vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence, vec3& eye) {
+vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence) {
 
-	vec3 color = { 0,0,0 }; // base color of nothing
+	vec3 color = { 0,0,0 };
 
-	float reflectEpsilon = 0.05f; // reduce self-reflection
+	if (refs >= refLimit) { // out of reflections
+		//if (hit.reflect) { // hit is reflective so it has no color of its own
+		//	return color;
+		//}
+		//else { // hit is phong so return that color instead
+		//	return shadeReflect(hit.x, hit.n, hit.phong, -incidence); // incidenece here should be the previous rays dir, then negated
+		//}
+		return color;
+	}
+
+	// has more reflections left
+
+	vec3 dir = normalize(glm::reflect(incidence, normalize(hit.n))); // dir = the reflection vector // MAKE SURE HIT.N IS NORMALIZED!!!!!!
+	vec3 pos = hit.x + (dir * 0.05f); // position = hit spot + epsilon shift
+
+	vector<vec3> ray = { pos,dir };
+	vector<Hit> reflectHits;
+
+	for (auto& shape : shapes) { // raycast for every shape in scene
+		shape->raycast(ray, reflectHits);
+	}
+
+	if (!reflectHits.empty()) { // RECURSIVE CASE
+		int minIdx;
+		float minT = INT_MAX;
+		minIdx = -1;
+
+		for (int i = 0; i < reflectHits.size(); i++) {
+			if (reflectHits[i].t < minT && reflectHits[i].t > 0) { // make sure .t is greater than 0 !!!
+				minT = reflectHits[i].t;
+				minIdx = i;
+			}
+		}
+
+		if (minIdx == -1) { // nothing was found, so no color
+			//cout << "i dont know how this happened\n";
+			return color;
+		} else if (reflectHits[minIdx].reflect) { // no phong found, meaning it reflected!
+			return color + reflectRay(reflectHits[minIdx], refLimit, refs + 1, dir);
+		}
+		else { // phong found, return base color + phong color AND STOP REFLECTING
+			return color + shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir);
+		}
+
+		//return shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir); // return the base color + the reflected color
+	}
+
+	return color; // base case of just no output 
+
+	/*vec3 color = { 0,0,0 }; // base color of nothing
 	
 	vec3 dir = normalize(glm::reflect(incidence, normalize(hit.n))); // dir = the reflection vector // MAKE SURE HIT.N IS NORMALIZED!!!!!!
-	vec3 pos = hit.x + (dir * reflectEpsilon); // position = hit spot + epsilon shift
+	vec3 pos = hit.x + (dir * 0.05f); // position = hit spot + epsilon shift
 
 	vector<vec3> ray = { pos,dir };
 
@@ -177,6 +226,7 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 			return shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir ); // return the base color + the reflected color
 	}
 	return color;
+	*/
 	/*
 
 	// base case: return black since were out of reflections
