@@ -1,7 +1,4 @@
-﻿  Scene.cpp
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(86,7): warning C4101: 'dir': unreferenced local variable
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(87,6): warning C4101: 'idx': unreferenced local variable
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(171,23): warning C4305: 'initializing': truncation from 'int' to 'float'
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(295,7): warning C4101: 'dir': unreferenced local variable
-C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp(296,6): warning C4101: 'idx': unreferenced local variable
+﻿  main.cpp
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Triangle.h(97,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\main.cpp(162,38): warning C4834: discarding return value of function with 'nodiscard' attribute
   A6.vcxproj -> C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\build\Debug\A6.exe

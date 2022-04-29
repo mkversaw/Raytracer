@@ -13,6 +13,7 @@
 
 #include "Sphere.h"
 #include "Plane.h"
+#include "Triangle.h"
 
 #include "Camera.h"
 #include "Image.h"

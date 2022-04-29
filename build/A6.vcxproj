@@ -23,7 +23,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{17D8A5C9-D294-3D05-AF31-6947FB74D0BB}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>A6</ProjectName>
@@ -330,6 +330,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.cpp" />
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Shape.cpp" />
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.cpp" />
+    <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Triangle.cpp" />
     <ClCompile Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\main.cpp" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Camera.h" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Hit.h" />
@@ -341,6 +342,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Scene.h" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Shape.h" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Sphere.h" />
+    <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\Triangle.h" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\stb_image_write.h" />
     <ClInclude Include="C:\Users\mkver\Documents\School\Spring 2022\CSCE 441-200 GRAPHICS\Assignments\A6\src\tiny_obj_loader.h" />
   </ItemGroup>

@@ -80,6 +80,11 @@ vec3 Scene::shade(const vec3& pos, const vec3& norm, const Phong& phong) {
 
 	clamper(n,-1,1); // NORMALS SHOULD BE CLAMPED WITH [-1 TO 1] !!!
 
+	vec3 norn = n;
+	clamper(norn);
+	norn *= 255;
+	return norn;
+
 	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
 	vector<Hit> shadowHits; // put here
