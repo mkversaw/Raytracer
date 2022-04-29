@@ -22,13 +22,13 @@ void Sphere::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 	vec3 vPrime = normalize( invE * vec4(ray[1],0) );
 
 	float a = dot(vPrime, vPrime);
-	float b = 2 * (dot(vPrime, pPrime));
+	float b = 2.0f * (dot(vPrime, pPrime));
 	float c = (dot(pPrime, pPrime)) - 1;
-	float d = pow(b, 2) - 4 * a * c;
+	float d = pow(b, 2.0f) - 4.0f * a * c;
 
 	if (d > 0) {
-		float tPrime1 = (-b - sqrt(d)) / (2 * a);
-		float tPrime2 = (-b + sqrt(d)) / (2 * a);
+		float tPrime1 = (-b - sqrt(d)) / (2.0f * a);
+		float tPrime2 = (-b + sqrt(d)) / (2.0f * a);
 
 		vec3 xPrime1 = pPrime + tPrime1 * vPrime;
 		vec3 xPrime2 = pPrime + tPrime2 * vPrime;
@@ -62,9 +62,9 @@ bool Sphere::shadowCast(const vector<vec3>& ray, float maxDist) {
 	vec3 vPrime = normalize(invE * vec4(ray[1], 0));
 
 	float a = dot(vPrime, vPrime);
-	float b = 2 * (dot(vPrime, pPrime));
-	float c = (dot(pPrime, pPrime)) - 1;
-	float d = pow(b, 2) - 4 * a * c;
+	float b = 2.0f * (dot(vPrime, pPrime));
+	float c = (dot(pPrime, pPrime)) - 1.0f;
+	float d = pow(b, 2.0f) - 4.0f * a * c;
 
 	if (d > 0) {
 		float tPrime1 = (-b - sqrt(d)) / (2 * a);
@@ -73,11 +73,11 @@ bool Sphere::shadowCast(const vector<vec3>& ray, float maxDist) {
 		vec3 xPrime1 = pPrime + tPrime1 * vPrime;
 		vec3 xPrime2 = pPrime + tPrime2 * vPrime;
 
-		vec3 x1 = E * vec4(xPrime1, 1);
-		vec3 x2 = E * vec4(xPrime2, 1);
+		vec3 x1 = E * vec4(xPrime1, 1.0f);
+		vec3 x2 = E * vec4(xPrime2, 1.0f);
 
-		vec3 n1 = normalize(transpose(invE) * vec4(xPrime1, 0));
-		vec3 n2 = normalize(transpose(invE) * vec4(xPrime2, 0));
+		vec3 n1 = normalize(transpose(invE) * vec4(xPrime1, 0.0f));
+		vec3 n2 = normalize(transpose(invE) * vec4(xPrime2, 0.0f));
 
 		float t1 = length(x1 - ray[0]);
 		float t2 = length(x2 - ray[0]);

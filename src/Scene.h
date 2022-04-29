@@ -57,8 +57,6 @@ struct Scene {
 
 	vec3 reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incidence);
 
-	void initDebug();
-
 	void clamper(vec3& v, float l = 0.0f, float h = 1.0f);
 };
 

@@ -16,11 +16,6 @@ int sceneSelect,width, height;
 
 shared_ptr<Scene> scene;
 
-//ostream& operator<<(ostream& os, const vec3& v) { // helpful
-//	os << v.x << " " << v.y << " " << v.z;
-//	return os;
-//}
-
 int main(int argc, char **argv)
 {
 	if (argc < 4) {
@@ -30,13 +25,12 @@ int main(int argc, char **argv)
 
 	sceneSelect = atoi(argv[1]);
 
+	cout << "Selected scene: " << sceneSelect << " creating and rendering now\n";
+
 	width = atoi(argv[2]);
 	height = width;
 
 	string filename(argv[3]);
-
-
-	
 
 	scene = make_shared<Scene>(width,height);
 
@@ -154,7 +148,7 @@ int main(int argc, char **argv)
 						}
 					}
 					index_offset += fv;
-					shapesVec[s].mesh.material_ids[f];
+					//shapesVec[s].mesh.material_ids[f];  // per-face material (IGNORE)
 				}
 			}
 		}
@@ -191,7 +185,7 @@ int main(int argc, char **argv)
 	}
 	else if (sceneSelect == 7) {
 		auto M = make_shared<MatrixStack>();
-		M->translate(0.3, -1.5, 0.0);
+		M->translate(0.3f, -1.5f, 0.0f);
 		constexpr float deg = 20.0f * (glm::pi<float>() / 180.0f); // 20 degrees in radians
 		M->rotate(deg, vec3(1, 0, 0));
 		M->scale(1.5f);
@@ -234,7 +228,7 @@ int main(int argc, char **argv)
 						}
 					}
 					index_offset += fv;
-					shapesVec[s].mesh.material_ids[f];
+					//shapesVec[s].mesh.material_ids[f]; // per-face material (IGNORE)
 				}
 			}
 		}
@@ -245,12 +239,8 @@ int main(int argc, char **argv)
 		}
 
 		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
-		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 1.0f, 1.0f), 1.0f);
+		shared_ptr<Light> light1 = make_shared<Light>(vec3(1.0f, 1.0f, 2.0f), 1.0f);
 		scene->lights.push_back(light1);
-
-		auto M = make_shared<MatrixStack>();
-		M->loadIdentity();
-		glm::mat4 identity = M->topMatrix();
 
 		for (int i = 0; i < posBuf.size(); i += 9) { // 9 per triangle
 
@@ -263,12 +253,17 @@ int main(int argc, char **argv)
 			vec3 n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
 
 
-			shared_ptr<Triangle> tri = make_shared<Triangle>(v1, v2, v3, n1, n2, n3, identity); // vertices , normals for those verts, and the trans matrix
+			shared_ptr<Triangle> tri = make_shared<Triangle>(v1, v2, v3, n1, n2, n3, modelTrans); // vertices , normals for those verts, and the trans matrix
 			tri->phong = blue;
 			scene->shapes.push_back(tri);
 		}
-
 		scene->isMesh = true;
+	}
+	else if (sceneSelect == 0) { // bonus 1
+
+	}
+	else if (sceneSelect == 9) { // bonus 2
+
 	}
 
 

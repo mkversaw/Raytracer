@@ -8,9 +8,7 @@ Scene::Scene() {
 	std::cout << "default constructor used, caution is advised!\n";
 }
 
-Scene::Scene(const int width, const int height) : width(width), height(height) {
-	std::cout << "creating scene with width: " << width << " and height: " << height << "\n";
-}
+Scene::Scene(const int width, const int height) : width(width), height(height) {}
 
 void Scene::init() {
 	image = make_shared<Image>(width, height); // create the image for output
@@ -19,16 +17,6 @@ void Scene::init() {
 	for (auto& shape : shapes) { // set the E matrix for each shape
 		shape->setE();
 	}
-}
-
-void Scene::initDebug() {
-	image = make_shared<Image>(width, height); // create the image for output
-	camera = make_shared<Camera>(width, height); // create the camera
-
-	shared_ptr<Sphere> origin = make_shared<Sphere>(vec3(0, 0.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
-	Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
-	origin->phong = red;
-	shapes.push_back(origin);
 }
 
 void Scene::render() {
@@ -90,8 +78,7 @@ vec3 Scene::shade(const vec3& pos, const vec3& norm, const Phong& phong) {
 	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
 	vector<Hit> shadowHits; // put here
-	vec3 dir;
-	int idx;
+
 	float dist;
 	float shadowEpsilon = 0.1f;
 	bool shadow;
@@ -165,7 +152,7 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 
 	if (!reflectHits.empty()) { // RECURSIVE CASE
 		int minIdx;
-		float minT = INT_MAX;
+		float minT = (float)INT_MAX;
 		minIdx = -1;
 
 		for (int i = 0; i < reflectHits.size(); i++) {
@@ -199,8 +186,7 @@ vec3 Scene::shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, 
 	clamper(n, -1, 1); // NORMALS SHOULD BE CLAMPED WITH [-1 TO 1] !!!
 
 	vector<Hit> shadowHits; // put here
-	vec3 dir;
-	int idx;
+
 	float dist;
 	float shadowEpsilon = 0.1f;
 	bool shadow;
@@ -303,8 +289,7 @@ vec3 Scene::shadeMesh(const vec3& pos, const vec3& norm, const Phong& phong) {
 	vec3 eye = normalize(camera->position - pos); // camera position - intersection position
 
 	vector<Hit> shadowHits; // put here
-	vec3 dir;
-	int idx;
+
 	float dist;
 	float shadowEpsilon = 0.1f;
 	bool shadow;

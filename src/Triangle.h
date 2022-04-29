@@ -101,7 +101,7 @@ struct Triangle : Shape {
         if (intersect_triangle(orig, dir, t, u, v) == 1) {
 
             // make a hit
-            if (t > 0) {
+            
 
                 w = 1 - u - v;
 
@@ -123,7 +123,7 @@ struct Triangle : Shape {
                     return true;
                 }
                 
-            }
+            
         }
         return false;
     }
@@ -149,14 +149,14 @@ struct Triangle : Shape {
 
         if (det > -EPSILON && det < EPSILON)
             return 0;
-        inv_det = 1.0 / det;
+        inv_det = 1.0f / det;
 
         /* calculate distance from vert0 to ray origin */
         SUB(tvec, orig, vert0);
 
         /* calculate U parameter and test bounds */
         u = DOT(tvec, pvec) * inv_det;
-        if (u < 0.0 || u > 1.0)
+        if (u < 0.0f || u > 1.0f)
             return 0;
 
         /* prepare to test V parameter */
@@ -164,7 +164,7 @@ struct Triangle : Shape {
 
         /* calculate V parameter and test bounds */
         v = DOT(dir, qvec) * inv_det;
-        if (v < 0.0 || u + v > 1.0)
+        if (v < 0.0f || u + v > 1.0f)
             return 0;
 
         /* calculate t, ray intersects triangle */

@@ -52,8 +52,6 @@ struct Shape {
 	virtual void setE() { std::cout << "default set E called!\n"; };
 
 	virtual void debug(bool printColor);
-
-	void shift(char dir, float factor);
 };
 
 inline void normRGB(vec3& color) { color /= 255.0f; } // helper function

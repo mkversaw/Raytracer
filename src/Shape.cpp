@@ -5,10 +5,14 @@ Shape::Shape() {
 	rotation = { 0,0,0 };
 	scale = { 1,1,1 };
 	phong = Phong(); // ?
+	E = mat4();
+	invE = mat4();
 }
 
 Shape::Shape(const vec3& p, const vec3& r, const vec3& s) : pos(p), rotation(r), scale(s) {
 	std::cout << "parameter shape construct called!\n";
+	E = mat4();
+	invE = mat4();
 }
 
 //Shape::Shape(const vec3& p, const vec3& r, const vec3& s, const Phong& pho) : pos(p), rotation(r), scale(s), phong(pho) {
@@ -17,34 +21,6 @@ Shape::Shape(const vec3& p, const vec3& r, const vec3& s) : pos(p), rotation(r),
 
 void Shape::raycast(const vector<vec3>& ray, vector<Hit>& hits) {
 	std::cout << "default shape raycast called!\n";
-}
-
-
-void Shape::shift(char dir, float factor) { // debugging tool
-	std::cout << "shifting in direction " << dir << " by factor " << factor << "\n";
-	switch (dir) {
-	case 'l': // left
-		pos.x -= factor;
-		break;
-	case 'r': // right
-		pos.x += factor;
-		break;
-	case 'u': // up
-		pos.y += factor;
-		break;
-	case 'd': // down
-		pos.y -= factor;
-		break;
-	case 'f': // forward
-		pos.z += factor;
-		break;
-	case 'b': // back
-		pos.z -= factor;
-		break;
-	default:
-		std::cout << "invalid dir char!\n";
-		break;
-	}
 }
 
 void Shape::debug(bool printColor = false) {
