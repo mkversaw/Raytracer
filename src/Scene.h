@@ -34,6 +34,8 @@ struct Scene {
 
 	shared_ptr<Camera> camera;
 
+	bool isMesh = false;
+
 	Scene();
 	Scene(const int width, const int height);
 
@@ -48,6 +50,8 @@ struct Scene {
 	void setPix(int x, int y, vec3& color);
 
 	vec3 shade(const vec3& pos, const vec3& norm, const Phong& phong);
+
+	vec3 shadeMesh(const vec3& pos, const vec3& norm, const Phong& phong);
 
 	vec3 shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, vec3& eye);
 

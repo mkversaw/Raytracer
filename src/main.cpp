@@ -5,6 +5,7 @@
 #include "tiny_obj_loader.h"
 
 #include "Scene.h"
+#include <glm/gtc/type_ptr.hpp>
 
 // This allows you to skip the `std::` in front of C++ standard library
 // functions. You can also say `using std::cout` to be more selective.
@@ -116,7 +117,7 @@ int main(int argc, char **argv)
 		scene->shapes.push_back(reflectiveBall2);
 	}
 	else if (sceneSelect == 6) {
-		string meshName = "../resources/teapot.obj";
+		string meshName = "../resources/bunny.obj";
 		// Load geometry
 		vector<float> posBuf; // list of vertex positions
 		vector<float> norBuf; // list of vertex normals
@@ -167,6 +168,10 @@ int main(int argc, char **argv)
 		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 1.0f, 1.0f), 1.0f);
 		scene->lights.push_back(light1);
 
+		auto M = make_shared<MatrixStack>();
+		M->loadIdentity();
+		glm::mat4 identity = M->topMatrix();
+
 		for (int i = 0; i < posBuf.size(); i += 9) { // 9 per triangle
 
 			vec3 v1 = { posBuf[i], posBuf[i + 1], posBuf[i + 2] };
@@ -178,12 +183,92 @@ int main(int argc, char **argv)
 			vec3 n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
 
 
-			shared_ptr<Triangle> tri = make_shared<Triangle>(v1,v2,v3,n1,n2,n3); // pos , scale , rotation
+			shared_ptr<Triangle> tri = make_shared<Triangle>(v1,v2,v3,n1,n2,n3,identity); // vertices , normals for those verts, and the trans matrix
+			tri->phong = blue;
+			scene->shapes.push_back(tri);
+		}
+		scene->isMesh = true; // very important do not forget!!!
+	}
+	else if (sceneSelect == 7) {
+		auto M = make_shared<MatrixStack>();
+		M->translate(0.3, -1.5, 0.0);
+		constexpr float deg = 20.0f * (glm::pi<float>() / 180.0f); // 20 degrees in radians
+		M->rotate(deg, vec3(1, 0, 0));
+		M->scale(1.5f);
+		glm::mat4 modelTrans = M->topMatrix();
+
+		string meshName = "../resources/bunny.obj";
+		// Load geometry
+		vector<float> posBuf; // list of vertex positions
+		vector<float> norBuf; // list of vertex normals
+		vector<float> texBuf; // list of vertex texture coords
+		tinyobj::attrib_t attrib;
+		std::vector<tinyobj::shape_t> shapesVec;
+		std::vector<tinyobj::material_t> materials;
+		string errStr;
+		bool rc = tinyobj::LoadObj(&attrib, &shapesVec, &materials, &errStr, meshName.c_str());
+		if (!rc) {
+			cerr << errStr << endl;
+		}
+		else {
+			for (size_t s = 0; s < shapesVec.size(); s++) {
+				// Loop over faces (polygons)
+				size_t index_offset = 0;
+				for (size_t f = 0; f < shapesVec[s].mesh.num_face_vertices.size(); f++) {
+					size_t fv = shapesVec[s].mesh.num_face_vertices[f];
+					// Loop over vertices in the face.
+					for (size_t v = 0; v < fv; v++) {
+						// access to vertex
+						tinyobj::index_t idx = shapesVec[s].mesh.indices[index_offset + v];
+						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 0]);
+						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 1]);
+						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 2]);
+						if (!attrib.normals.empty()) {
+							norBuf.push_back(attrib.normals[3 * idx.normal_index + 0]);
+							norBuf.push_back(attrib.normals[3 * idx.normal_index + 1]);
+							norBuf.push_back(attrib.normals[3 * idx.normal_index + 2]);
+						}
+						if (!attrib.texcoords.empty()) {
+							texBuf.push_back(attrib.texcoords[2 * idx.texcoord_index + 0]);
+							texBuf.push_back(attrib.texcoords[2 * idx.texcoord_index + 1]);
+						}
+					}
+					index_offset += fv;
+					shapesVec[s].mesh.material_ids[f];
+				}
+			}
+		}
+
+		if (posBuf.size() < 9) {
+			std::cout << "not enough vertices for a triangle!";
+			return 0;
+		}
+
+		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 1.0f, 1.0f), 1.0f);
+		scene->lights.push_back(light1);
+
+		auto M = make_shared<MatrixStack>();
+		M->loadIdentity();
+		glm::mat4 identity = M->topMatrix();
+
+		for (int i = 0; i < posBuf.size(); i += 9) { // 9 per triangle
+
+			vec3 v1 = { posBuf[i], posBuf[i + 1], posBuf[i + 2] };
+			vec3 v2 = { posBuf[i + 3], posBuf[i + 4], posBuf[i + 5] };
+			vec3 v3 = { posBuf[i + 6], posBuf[i + 7], posBuf[i + 8] };
+
+			vec3 n1 = { norBuf[i], norBuf[i + 1], norBuf[i + 2] };
+			vec3 n2 = { norBuf[i + 3], norBuf[i + 4], norBuf[i + 5] };
+			vec3 n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
+
+
+			shared_ptr<Triangle> tri = make_shared<Triangle>(v1, v2, v3, n1, n2, n3, identity); // vertices , normals for those verts, and the trans matrix
 			tri->phong = blue;
 			scene->shapes.push_back(tri);
 		}
 
-
+		scene->isMesh = true;
 	}
 
 

@@ -12,6 +12,7 @@ struct Hit
 	Hit(const glm::vec3& x, const glm::vec3& n, float t, const Phong& pho, const bool refl) { this->x = x; this->n = n; this->t = t; this->phong = pho; this->reflect = refl; }
 	glm::vec3 x; // position
 	glm::vec3 n; // normal
+
 	float t; // distance
 
 	bool reflect;
