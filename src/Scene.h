@@ -34,7 +34,11 @@ struct Scene {
 
 	shared_ptr<Camera> camera;
 
+
 	bool isMesh = false;
+
+	shared_ptr<Sphere> boundingSphere;
+
 	bool isBlend = false;
 
 	int reflectLimit = 3;
@@ -45,6 +49,7 @@ struct Scene {
 	void init();
 
 	void render();
+	//void renderMesh();
 
 	void renderAA4X();
 	void renderAA16X();

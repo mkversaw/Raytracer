@@ -19,6 +19,10 @@ shared_ptr<Scene> scene;
 Phong cyan = Phong(vec3(0.0, 1.0, 1.0), vec3(0.5, 1.0, 1.0), vec3(0.1, 0.1, 0.1), 100.0f);
 Phong magenta = Phong(vec3(1.0, 0.0, 1.0), vec3(1.0, 0.5, 1.0), vec3(0.1, 0.1, 0.1), 100.0f);
 
+float dist(vec3& center,vec3& testPoint) {
+	return sqrt(pow(center.x - testPoint.x, 2.0f) + pow(center.y - testPoint.y, 2.0f) + pow(center.z - testPoint.z, 2.0f));
+}
+
 int main(int argc, char **argv)
 {
 	if (argc < 4) {
@@ -114,6 +118,9 @@ int main(int argc, char **argv)
 		scene->shapes.push_back(reflectiveBall2);
 	}
 	else if (sceneSelect == 6) {
+
+
+
 		string meshName = "../resources/bunny.obj";
 		// Load geometry
 		vector<float> posBuf; // list of vertex positions
@@ -140,6 +147,7 @@ int main(int argc, char **argv)
 						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 0]);
 						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 1]);
 						posBuf.push_back(attrib.vertices[3 * idx.vertex_index + 2]);
+
 						if (!attrib.normals.empty()) {
 							norBuf.push_back(attrib.normals[3 * idx.normal_index + 0]);
 							norBuf.push_back(attrib.normals[3 * idx.normal_index + 1]);
@@ -161,6 +169,16 @@ int main(int argc, char **argv)
 			return 0;
 		}
 
+		float meshRadius = -1;
+		vec3 meshPosAvg = { 0,0,0 };
+
+		for (int i = 0; i < posBuf.size(); i += 3) {
+			meshPosAvg.x += posBuf[i];
+			meshPosAvg.y += posBuf[i + 1];
+			meshPosAvg.z += posBuf[i + 2];
+		}
+		meshPosAvg /= (posBuf.size() / 3); // centroid of the mesh
+
 		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
 		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 1.0f, 1.0f), 1.0f);
 		scene->lights.push_back(light1);
@@ -175,16 +193,24 @@ int main(int argc, char **argv)
 			vec3 v2 = { posBuf[i + 3], posBuf[i + 4], posBuf[i + 5] };
 			vec3 v3 = { posBuf[i + 6], posBuf[i + 7], posBuf[i + 8] };
 
+			meshRadius = max(meshRadius,dist(meshPosAvg, v1));
+			meshRadius = max(meshRadius,dist(meshPosAvg, v2));
+			meshRadius = max(meshRadius,dist(meshPosAvg, v3));
+
 			vec3 n1 = { norBuf[i], norBuf[i + 1], norBuf[i + 2] };
 			vec3 n2 = { norBuf[i + 3], norBuf[i + 4], norBuf[i + 5] };
 			vec3 n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
-
 
 			shared_ptr<Triangle> tri = make_shared<Triangle>(v1,v2,v3,n1,n2,n3,identity); // vertices , normals for those verts, and the trans matrix
 			tri->phong = blue;
 			scene->shapes.push_back(tri);
 		}
+
 		scene->isMesh = true; // very important do not forget!!!
+
+		scene->boundingSphere = make_shared<Sphere>(meshPosAvg, vec3(meshRadius, meshRadius, meshRadius), vec3(0, 0, 0), 1.0f);
+		scene->boundingSphere->setE();
+
 	}
 	else if (sceneSelect == 7) {
 		auto M = make_shared<MatrixStack>();
@@ -241,26 +267,55 @@ int main(int argc, char **argv)
 			return 0;
 		}
 
+		float meshRadius = -1;
+		vec3 meshPosAvg = { 0,0,0 };
+
+		for (int i = 0; i < posBuf.size(); i += 3) {
+			meshPosAvg.x += posBuf[i];
+			meshPosAvg.y += posBuf[i + 1];
+			meshPosAvg.z += posBuf[i + 2];
+		}
+		meshPosAvg /= (posBuf.size() / 3); // centroid of the mesh
+
 		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
 		shared_ptr<Light> light1 = make_shared<Light>(vec3(1.0f, 1.0f, 2.0f), 1.0f);
 		scene->lights.push_back(light1);
-
+		vec3 v1, v2, v3;
+		vec3 n1, n2, n3;
 		for (int i = 0; i < posBuf.size(); i += 9) { // 9 per triangle
 
-			vec3 v1 = { posBuf[i], posBuf[i + 1], posBuf[i + 2] };
-			vec3 v2 = { posBuf[i + 3], posBuf[i + 4], posBuf[i + 5] };
-			vec3 v3 = { posBuf[i + 6], posBuf[i + 7], posBuf[i + 8] };
+			v1 = { posBuf[i], posBuf[i + 1], posBuf[i + 2] };
+			v2 = { posBuf[i + 3], posBuf[i + 4], posBuf[i + 5] };
+			v3 = { posBuf[i + 6], posBuf[i + 7], posBuf[i + 8] };
 
-			vec3 n1 = { norBuf[i], norBuf[i + 1], norBuf[i + 2] };
-			vec3 n2 = { norBuf[i + 3], norBuf[i + 4], norBuf[i + 5] };
-			vec3 n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
+			meshRadius = max(meshRadius, dist(meshPosAvg, v1));
+			meshRadius = max(meshRadius, dist(meshPosAvg, v2));
+			meshRadius = max(meshRadius, dist(meshPosAvg, v3));
+
+			n1 = { norBuf[i], norBuf[i + 1], norBuf[i + 2] };
+			n2 = { norBuf[i + 3], norBuf[i + 4], norBuf[i + 5] };
+			n3 = { norBuf[i + 6], norBuf[i + 7], norBuf[i + 8] };
 
 
 			shared_ptr<Triangle> tri = make_shared<Triangle>(v1, v2, v3, n1, n2, n3, modelTrans); // vertices , normals for those verts, and the trans matrix
 			tri->phong = blue;
 			scene->shapes.push_back(tri);
+
 		}
 		scene->isMesh = true;
+
+		scene->boundingSphere = make_shared<Sphere>(meshPosAvg, vec3(meshRadius, meshRadius, meshRadius), vec3(0, 0, 0), 1.0f);
+		scene->boundingSphere->setE();
+
+		std::shared_ptr<MatrixStack> MV = std::make_shared<MatrixStack>();
+		MV->loadIdentity();
+		MV->multMatrix(modelTrans);
+		MV->multMatrix(scene->boundingSphere->E);
+		scene->boundingSphere->E = MV->topMatrix();
+		scene->boundingSphere->invE = inverse(MV->topMatrix());
+
+		scene->init();
+		scene->render();
 	}
 	else if (sceneSelect == 0) { // bonus 1 (blended reflection and phong)
 		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 2.0f, 1.0f), 0.5f);
@@ -326,7 +381,7 @@ int main(int argc, char **argv)
 	}
 
 
-	if (sceneSelect != 9) {
+	if (sceneSelect != 9 && sceneSelect != 7) {
 		scene->init();
 		scene->render();
 	}

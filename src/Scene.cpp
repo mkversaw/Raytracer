@@ -22,6 +22,7 @@ void Scene::init() {
 void Scene::render() {
 	camera->camInit(); // initialize the {P , MV , C , V} matrices
 	vector<vec3> ray; // size 2 : {pos,dir}
+	
 	vec3 col;
 
 	vec3 colRef;
@@ -34,6 +35,16 @@ void Scene::render() {
 			hits.clear();
 
 			ray = camera->debugRay(i + 0.5f, j + 0.5f);
+
+			if (isMesh) {
+				boundingSphere->raycast(ray, hits);
+				if (hits.empty()) { // bounding sphere wasn't hit, dont bother checking the triangles
+					continue;
+				}
+				else { // bounding sphere WAS hit, test all the triangles then
+					hits.clear();
+				}
+			}
 
 			for (auto& shape : shapes) { // raycast for every shape in scene
 				shape->raycast(ray, hits);
@@ -251,7 +262,7 @@ void Scene::renderAA4X() {
 			for (int x = 0; x < 2; x++) {
 				for (int y = 0; y < 2; y++) {
 					hits.clear();
-					ray = camera->debugRay(i + 0.25f + (x * 0.5), j + 0.25f + (y * 0.5f));
+					ray = camera->debugRay(i + 0.25f + (x * 0.5f), j + 0.25f + (y * 0.5f));
 
 					for (auto& shape : shapes) { // raycast for every shape in scene
 						shape->raycast(ray, hits);
@@ -311,7 +322,7 @@ void Scene::renderAA16X() {
 			for (int x = 0; x < 4; x++) {
 				for (int y = 0; y < 4; y++) {
 					hits.clear();
-					ray = camera->debugRay(i + 0.125f + (x * 0.25), j + 0.125f + (y * 0.25f));
+					ray = camera->debugRay(i + 0.125f + (x * 0.25f), j + 0.125f + (y * 0.25f));
 
 					for (auto& shape : shapes) { // raycast for every shape in scene
 						shape->raycast(ray, hits);
