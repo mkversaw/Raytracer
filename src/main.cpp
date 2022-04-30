@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
 	sceneSelect = atoi(argv[1]);
 
-	cout << "Selected scene: " << sceneSelect << " creating and rendering now\n";
+	cout << "Selected scene " << sceneSelect << ", creating and rendering now\n";
 
 	width = atoi(argv[2]);
 	height = width;
@@ -303,14 +303,35 @@ int main(int argc, char **argv)
 		scene->isBlend = true;
 	}
 	else if (sceneSelect == 9) { // bonus 2
-		
+		shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f, 1.0f, 1.0f), 1.0f);
+		scene->lights.push_back(light);
+
+		shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(-0.5f, -1.0f, 1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		redBall->phong = red;
+		scene->shapes.push_back(redBall);
+
+		shared_ptr<Sphere> greenBall = make_shared<Sphere>(vec3(0.5f, -1.0f, -1.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong green = Phong(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		greenBall->phong = green;
+		scene->shapes.push_back(greenBall);
+
+		shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(0.0f, 1.0f, 0.0f), vec3(1, 1, 1), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		blueBall->phong = blue;
+		scene->shapes.push_back(blueBall);
+
+		scene->init();
+		scene->renderAA4X(); // can swap this to renderAA16X() for better anti-aliasing
 	}
 
 
+	if (sceneSelect != 9) {
+		scene->init();
+		scene->render();
+	}
 
-	scene->init();
-	
-	scene -> render();
+
 	scene -> output(filename);
 
 	return 0;

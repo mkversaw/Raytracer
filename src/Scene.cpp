@@ -236,6 +236,126 @@ vec3 Scene::shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, 
 	return color;
 }
 
+void Scene::renderAA4X() {
+	camera->camInit(); // initialize the {P , MV , C , V} matrices
+	vector<vec3> ray; // size 2 : {pos,dir}
+	vec3 col = { 0,0,0 };
+
+	vec3 colRef;
+	vec3 colPhong;
+
+	int idx;
+
+	for (int j = 0; j < height; j++) { // for every pixel
+		for (int i = 0; i < width; i++) {
+			for (int x = 0; x < 2; x++) {
+				for (int y = 0; y < 2; y++) {
+					hits.clear();
+					ray = camera->debugRay(i + 0.25f + (x * 0.5), j + 0.25f + (y * 0.5f));
+
+					for (auto& shape : shapes) { // raycast for every shape in scene
+						shape->raycast(ray, hits);
+					}
+
+					if (!hits.empty()) {
+						idx = nearestHit(hits);
+
+						if (idx == -1) {
+							std::cout << "hits wasn't empty, yet no hit found?\n";
+						}
+						else {
+
+							if (isMesh) {
+								col += shadeMesh(hits[idx].x, hits[idx].n, hits[idx].phong);
+							}
+							else {
+								if (hits[idx].reflect) {
+									if (isBlend) {
+										colRef = reflectRay(hits[idx], reflectLimit, 0, ray[1]); // reflection color
+										colPhong = shade(hits[idx].x, hits[idx].n, hits[idx].phong); // base phong color
+										col += (0.3f * colRef) + (0.7f * colPhong); // 30% ref, 70% base phong
+									}
+									else {
+										col += reflectRay(hits[idx], reflectLimit, 0, ray[1]); // ray[1] is the incidence dir
+									}
+								}
+								else {
+									col += shade(hits[idx].x, hits[idx].n, hits[idx].phong);
+								}
+							}
+
+							
+						}
+					}
+				}
+			}
+			col /= 4; // colors have been summed, now average them by dividing
+			setPix(i, j, col); // only draw the closest hit, if there IS a hit at all
+			col = { 0,0,0 };
+		}
+	}
+}
+
+void Scene::renderAA16X() {
+	camera->camInit(); // initialize the {P , MV , C , V} matrices
+	vector<vec3> ray; // size 2 : {pos,dir}
+	vec3 col = { 0,0,0 };
+
+	vec3 colRef;
+	vec3 colPhong;
+
+	int idx;
+
+	for (int j = 0; j < height; j++) { // for every pixel
+		for (int i = 0; i < width; i++) {
+			for (int x = 0; x < 4; x++) {
+				for (int y = 0; y < 4; y++) {
+					hits.clear();
+					ray = camera->debugRay(i + 0.125f + (x * 0.25), j + 0.125f + (y * 0.25f));
+
+					for (auto& shape : shapes) { // raycast for every shape in scene
+						shape->raycast(ray, hits);
+					}
+
+					if (!hits.empty()) {
+						idx = nearestHit(hits);
+
+						if (idx == -1) {
+							std::cout << "hits wasn't empty, yet no hit found?\n";
+						}
+						else {
+
+							if (isMesh) {
+								col += shadeMesh(hits[idx].x, hits[idx].n, hits[idx].phong);
+							}
+							else {
+								if (hits[idx].reflect) {
+									if (isBlend) {
+										colRef = reflectRay(hits[idx], reflectLimit, 0, ray[1]); // reflection color
+										colPhong = shade(hits[idx].x, hits[idx].n, hits[idx].phong); // base phong color
+										col += (0.3f * colRef) + (0.7f * colPhong); // 30% ref, 70% base phong
+									}
+									else {
+										col += reflectRay(hits[idx], reflectLimit, 0, ray[1]); // ray[1] is the incidence dir
+									}
+								}
+								else {
+									col += shade(hits[idx].x, hits[idx].n, hits[idx].phong);
+								}
+							}
+
+
+						}
+					}
+				}
+			}
+			col /= 16; // colors have been summed, now average them by dividing
+			setPix(i, j, col); // only draw the closest hit, if there IS a hit at all
+			col = { 0,0,0 };
+		}
+	}
+}
+
 void Scene::clamper(vec3& v, float l, float h) {
 	v.x = glm::clamp(v.x, l, h);
 	v.y = glm::clamp(v.y, l, h);

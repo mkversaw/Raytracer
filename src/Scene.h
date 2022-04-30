@@ -46,6 +46,9 @@ struct Scene {
 
 	void render();
 
+	void renderAA4X();
+	void renderAA16X();
+
 	void output(const string& filename);
 
 	int nearestHit(const vector<Hit>& hitVec);
