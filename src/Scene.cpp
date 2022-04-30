@@ -23,13 +23,17 @@ void Scene::render() {
 	camera->camInit(); // initialize the {P , MV , C , V} matrices
 	vector<vec3> ray; // size 2 : {pos,dir}
 	vec3 col;
+
+	vec3 colRef;
+	vec3 colPhong;
+
 	int idx;
 
 	for (int j = 0; j < height; j++) { // for every pixel
-		for (int i = width - 1; i > 0; i--) {
+		for (int i = 0; i < width; i++) {
 			hits.clear();
 
-			ray = camera->debugRay(i - 0.5f, j + 0.5f);
+			ray = camera->debugRay(i + 0.5f, j + 0.5f);
 
 			for (auto& shape : shapes) { // raycast for every shape in scene
 				shape->raycast(ray, hits);
@@ -48,7 +52,14 @@ void Scene::render() {
 					}
 					else {
 						if (hits[idx].reflect) {
-							col = reflectRay(hits[idx], 3, 0, ray[1]); // ray[1] is the incidence dir
+							if (isBlend) {
+								colRef = reflectRay(hits[idx], reflectLimit, 0, ray[1]); // reflection color
+								colPhong = shade(hits[idx].x, hits[idx].n, hits[idx].phong); // base phong color
+								col = (0.3f * colRef) + (0.7f * colPhong); // 30% ref, 70% base phong
+							}
+							else {
+								col = reflectRay(hits[idx], reflectLimit, 0, ray[1]); // ray[1] is the incidence dir
+							}
 						}
 						else {
 							col = shade(hits[idx].x, hits[idx].n, hits[idx].phong);
@@ -116,8 +127,6 @@ vec3 Scene::shade(const vec3& pos, const vec3& norm, const Phong& phong) {
 
 	}
 
-	// CLAMP THE COLOR
-	//clamper(color);
 	color *= 255.0f;
 
 
@@ -128,13 +137,7 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 
 	vec3 color = { 0,0,0 };
 
-	if (refs >= refLimit) { // out of reflections
-		//if (hit.reflect) { // hit is reflective so it has no color of its own
-		//	return color;
-		//}
-		//else { // hit is phong so return that color instead
-		//	return shadeReflect(hit.x, hit.n, hit.phong, -incidence); // incidenece here should be the previous rays dir, then negated
-		//}
+	if (refs >= refLimit) { // out of reflections :(
 		return color;
 	}
 
@@ -165,14 +168,17 @@ vec3 Scene::reflectRay(const Hit& hit, int refLimit, int refs, const vec3& incid
 		if (minIdx == -1) { // nothing was found, so no color
 			//cout << "i dont know how this happened\n";
 			return color;
-		} else if (reflectHits[minIdx].reflect) { // no phong found, meaning it reflected!
-			return color + reflectRay(reflectHits[minIdx], refLimit, refs + 1, dir);
+		} else if (reflectHits[minIdx].reflect) { // hit a reflective surface!
+			if (isBlend) { // dont forget to add the blinn of the reflect object
+				return color + (0.7f * shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir)) + reflectRay(reflectHits[minIdx], refLimit, refs + 1, dir);
+			}
+			else {
+				return color + reflectRay(reflectHits[minIdx], refLimit, refs + 1, dir);
+			}
 		}
-		else { // phong found, return base color + phong color AND STOP REFLECTING
+		else { // Hit a non reflecive surface (phong hit), return base color + phong color AND STOP REFLECTING
 			return color + shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir);
 		}
-
-		//return shadeReflect(reflectHits[minIdx].x, reflectHits[minIdx].n, reflectHits[minIdx].phong, -dir); // return the base color + the reflected color
 	}
 
 	return color; // base case of just no output 
@@ -220,22 +226,10 @@ vec3 Scene::shadeReflect(const vec3& pos, const vec3& norm, const Phong& phong, 
 
 		vec3 cs = phong.ks * pow(std::max(0.0f, dot(h, n)), phong.s); // specular
 
-		//cout << "ka: " << phong.ka << "\n";
-		//cout << "ks: " << phong.ks << "\n";
-		//cout << "kd: " << phong.kd << "\n";
-		//
-		//cout << "eye: " << eye << "\n";
-		//cout << "l: " << eye << "\n";
-		//cout << "cd: " << eye << "\n";
-		//cout << "h: " << eye << "\n";
-		//cout << "cs: " << eye << "\n";
-
 		color += (light->intensity) * (cd + cs);
 
 	}
 
-	// CLAMP THE COLOR
-	//clamper(color);
 	color *= 255.0f;
 
 

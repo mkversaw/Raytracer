@@ -35,6 +35,9 @@ struct Scene {
 	shared_ptr<Camera> camera;
 
 	bool isMesh = false;
+	bool isBlend = false;
+
+	int reflectLimit = 3;
 
 	Scene();
 	Scene(const int width, const int height);
