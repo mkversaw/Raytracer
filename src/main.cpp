@@ -357,7 +357,7 @@ int main(int argc, char **argv)
 		scene->reflectLimit = 2;
 		scene->isBlend = true;
 	}
-	else if (sceneSelect == 9) { // bonus 2
+	else if (sceneSelect == 9) { // bonus 2 (anti-aliasing)
 		shared_ptr<Light> light = make_shared<Light>(vec3(-2.0f, 1.0f, 1.0f), 1.0f);
 		scene->lights.push_back(light);
 
@@ -379,9 +379,52 @@ int main(int argc, char **argv)
 		scene->init();
 		scene->renderAA4X(); // can swap this to renderAA16X() for better anti-aliasing
 	}
+	else if (sceneSelect == 10) { // NOT ACTUALLY ADDITIONAL BONUS, JUST COMBINING THE PREVIOUS TWO
+		shared_ptr<Light> light1 = make_shared<Light>(vec3(-1.0f, 2.0f, 1.0f), 0.5f);
+		scene->lights.push_back(light1);
+
+		shared_ptr<Light> light2 = make_shared<Light>(vec3(0.5f, -0.5f, 0.0f), 0.5f);
+		scene->lights.push_back(light2);
+
+		shared_ptr<Sphere> redBall = make_shared<Sphere>(vec3(0.5f, -0.7f, 0.5f), vec3(0.3, 0.3, 0.3), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong red = Phong(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		redBall->phong = red;
+		scene->shapes.push_back(redBall);
+
+		shared_ptr<Sphere> blueBall = make_shared<Sphere>(vec3(1.0f, -0.7f, 0.0f), vec3(0.3, 0.3, 0.3), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		Phong blue = Phong(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.5), vec3(0.1, 0.1, 0.1), 100.0f);
+		blueBall->phong = blue;
+		scene->shapes.push_back(blueBall);
+
+		shared_ptr<Plane> floor = make_shared<Plane>(vec3(0, -1.0, 0), vec3(1, 1, 1), vec3(glm::pi<float>() / 2, 0, 0)); // pos , scale , rotation
+		floor->phong = Phong(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), vec3(0.1, 0.1, 0.1), 0.0f);
+		scene->shapes.push_back(floor);
+
+		shared_ptr<Plane> backWall = make_shared<Plane>(vec3(0, 0.0, -3.0), vec3(1, 1, 1), vec3(0, glm::pi<float>(), 0)); // pos , scale , rotation
+		backWall->phong = Phong(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), vec3(0.1, 0.1, 0.1), 0.0f);
+		backWall->normal = { 0,0,1 };
+		scene->shapes.push_back(backWall);
+
+		shared_ptr<Sphere> reflectiveBall1 = make_shared<Sphere>(vec3(-0.5f, 0.0f, -0.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		reflectiveBall1->reflective = true;
+		reflectiveBall1->phong = cyan;
+		scene->shapes.push_back(reflectiveBall1);
+
+		shared_ptr<Sphere> reflectiveBall2 = make_shared<Sphere>(vec3(1.5f, 0.0f, -1.5f), vec3(1.0, 1.0, 1.0), vec3(0, 0, 0), 1.0f); // pos , scale , rotation , RADIUS
+		reflectiveBall2->reflective = true;
+
+		reflectiveBall2->phong = magenta;
+		scene->shapes.push_back(reflectiveBall2);
+
+		scene->reflectLimit = 2;
+		scene->isBlend = true;
+
+		scene->init();
+		scene->renderAA4X(); // can swap this to renderAA16X() for better anti-aliasing
+	}
 
 
-	if (sceneSelect != 9 && sceneSelect != 7) {
+	if (sceneSelect != 9 && sceneSelect != 7 && sceneSelect != 10) {
 		scene->init();
 		scene->render();
 	}
