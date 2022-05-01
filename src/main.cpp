@@ -416,11 +416,11 @@ int main(int argc, char **argv)
 		reflectiveBall2->phong = magenta;
 		scene->shapes.push_back(reflectiveBall2);
 
-		scene->reflectLimit = 2;
+		scene->reflectLimit = 3;
 		scene->isBlend = true;
 
 		scene->init();
-		scene->renderAA4X(); // can swap this to renderAA16X() for better anti-aliasing
+		scene->renderAA16X(); // can swap this to renderAA16X() for better anti-aliasing
 	}
 
 
