@@ -1,5 +1,9 @@
 # Raytracer
 
+<p align="center" width="100%">
+    <img width="33%" src="pic.png"> 
+</p>
+
 ## About
 
 My implementation of a Ray Tracer using C++ and the GLM library. Supports Blinn-Phong shading with multiple lights, shadows, and reflections
