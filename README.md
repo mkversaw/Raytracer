@@ -1,22 +1,25 @@
-# CSCE 441 - A6
+# Raytracer
 
-Name: Miles Versaw
-UIN: 913007618
-email: mkversaw@tamu.edu
+## About
 
-Highest task completed: Scene 7 + Blended Reflection and Anti-aliasing
+My implementation of a Ray Tracer using C++ and the GLM library. Supports Blinn-Phong shading with multiple lights, shadows, and reflections
 
-Citations:
-None
+## Dependencies
 
-Note:
+* CMake
+* GLM
 
-Since im in the honors section I skipped scene 8 and instead implemented blended reflection and anti-aliasing for the 10 mandatory bonus points.
+Build with CMake then run with `./Raytracer <SCENE> <IMAGE SIZE> <IMAGE FILENAME>`
 
-Scene 0 -> blended reflection
-Scene 9 -> anti-aliasing
-Scene 10 -> NOT additional bonus, but combined blended reflection and anti-aliasing
+## Scene Info
 
-for scene 9 if you edit line 380 in main.cpp to `scene->renderAA16X()` instead of `scene->renderAA4X()`, it will further increase the level of anti-aliasing if you find the base (4x) amount insufficient
-
-The `CMakeLists.txt` file references openGL, glsl, and glew, but none of these are actually used anywhere in the assignment. They are there because its just a slightly modified version of the one from A5.
+* Scene 0 -> blended reflection
+* Scene 1 -> single light no shadows
+* Scene 2 -> single light with shadows
+* Scene 3 -> multiple lights with shadows
+* Scene 4 -> Single reflection
+* Scene 5 -> Recursive reflections
+* Scene 6 -> Custom mesh w/o model transformation
+* Scene 7 -> Custom mesh w/ model transformation
+* Scene 9 -> anti-aliasing
+* Scene 10 -> combined blended reflection and anti-aliasing
